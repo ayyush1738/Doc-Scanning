@@ -14,13 +14,11 @@
     <section class="hero">
         <div class="container">
             <div class="form-container" id="login-form">
-                <h2>Login</h2>
+                <h2 class="heading">Login</h2>
                 <form action="/auth/login" method="POST">
-                    <label for="username">Username:</label>
-                    <input type="text" id="login-username" name="username" required>
+                    <input type="text" placeholder="Username" id="login-username" name="username" required>
     
-                    <label for="password">Password:</label>
-                    <input type="password" id="login-password" name="password" required>
+                    <input type="password" placeholder="Password" id="login-password" name="password" required>
     
                     <label for="role">Role:</label>
                     <select id="login-role" name="role">
