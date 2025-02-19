@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="dashboardStyles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="#" class="active">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Settings</a>
+    </div>
+
+    <div class="dashboard-container">
+        <h1>Admin Analytics Dashboard</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h2>Total Scans Today</h2>
+                <p id="total-scans">Loading...</p>
+            </div>
+            <div class="stat-card">
+                <h2>Top Scanned Topics</h2>
+                <p id="top-topics">Loading...</p>
+            </div>
+            <div class="stat-card">
+                <h2>Top Users by Scans</h2>
+                <ul id="top-users"></ul>
+            </div>
+            <div class="stat-card">
+                <h2>Credit Usage Stats</h2>
+                <canvas id="creditChart"></canvas>
+            </div>
+        </div>
+
+        <h2>Scans per User</h2>
+        <table id="user-scans-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Scans Today</th>
+                    <th>Total Scans</th>
+                    <th>Remaining Credits</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchAnalytics() {
+            const response = await fetch("/admin/analytics");
+            const data = await response.json();
+
+            document.getElementById("total-scans").innerText = data.total_scans_today;
+            document.getElementById("top-topics").innerText = data.top_topics.join(", ");
+
+            const topUsersList = document.getElementById("top-users");
+            topUsersList.innerHTML = "";
+            data.top_users.forEach(user => {
+                let li = document.createElement("li");
+                li.textContent = `${user.username} - ${user.total_scans} scans`;
+                topUsersList.appendChild(li);
+            });
+
+            const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
+            tableBody.innerHTML = "";
+            data.user_scans.forEach(user => {
+                let row = `<tr>
+                    <td>${user.username}</td>
+                    <td>${user.scans_today}</td>
+                    <td>${user.total_scans}</td>
+                    <td>${user.credits}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+
+            // Chart for credit usage stats
+            const ctx = document.getElementById("creditChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: data.top_users.map(user => user.username),
+                    datasets: [{
+                        label: "Credits Used",
+                        data: data.top_users.map(user => user.credits_used),
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        fetchAnalytics();
+    </script>
+
+</body>
+</html>

@@ -61,6 +61,7 @@ input, select {
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 35px;
+    box-shadow: 5px 0px 10px #02438a;
 }
 
 button {
