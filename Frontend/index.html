@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Scanning System - Auth</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <header class="cath-logo">
+        <img id="cath-logo" src="./public/cathago.svg" alt="alt">
+    </header> 
+
+    <section class="hero">
+        <div class="container">
+            <div class="form-container" id="login-form">
+                <h2>Login</h2>
+                <form action="/auth/login" method="POST">
+                    <label for="username">Username:</label>
+                    <input type="text" id="login-username" name="username" required>
+    
+                    <label for="password">Password:</label>
+                    <input type="password" id="login-password" name="password" required>
+    
+                    <label for="role">Role:</label>
+                    <select id="login-role" name="role">
+                        <option value="user">Regular User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+    
+                    <button type="submit">Sign In</button>
+                    <p>Don't have an account? <a href="#" onclick="toggleForms()">Register here</a></p>
+                </form>
+            </div>
+    
+            <div class="form-container hidden" id="register-form">
+                <h2>Register</h2>
+                <form action="/auth/register" method="POST">
+                    <label for="new-username">Username:</label>
+                    <input type="text" id="new-username" name="username" required>
+    
+                    <label for="new-password">Password:</label>
+                    <input type="password" id="new-password" name="password" required>
+    
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm_password" required>
+    
+                    <label for="register-role">Role:</label>
+                    <select id="register-role" name="role">
+                        <option value="user">Regular User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+    
+                    <button type="submit">Register</button>
+                    <p>Already have an account? <a href="#" onclick="toggleForms()">Login here</a></p>
+                </form>
+            </div>
+        </div>     
+
+    </section>
+
+    <script>
+        function toggleForms() {
+            document.getElementById("login-form").classList.toggle("hidden");
+            document.getElementById("register-form").classList.toggle("hidden");
+        }
+    </script>
+
+</body>
+</html>
