@@ -30,4 +30,4 @@ app.use(express.static("public"));
 
 // app.use(errorHandler);
 
-export default app;
+module.exports = app;

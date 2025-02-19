@@ -1,5 +1,5 @@
 // import 'dotenv/config';
-const connectDB = require('../Database/connectDb.js');  
+const connectDB = require('./Database/connectDb.js');  
 const app = require('./app.js');
 
 
