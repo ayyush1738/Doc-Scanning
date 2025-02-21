@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 // Register
-app.post("/register", (req, res) => {
+app.post("/auth/register", (req, res) => {
     const { username, password, role } = req.body;
     registerUser(username, password, role, (err) => {
         if (err) return res.status(400).send("Error: " + err.message);
@@ -32,7 +32,7 @@ app.post("/register", (req, res) => {
 });
 
 // Login
-app.post("/login", (req, res) => {
+app.post("/auth/login", (req, res) => {
     const { username, password } = req.body;
     loginUser(username, password, (err, user) => {
         if (err) return res.status(400).send(err);
