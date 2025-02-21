@@ -11,8 +11,16 @@ async function registerUser(username, password, role, callback) {
 async function loginUser(username, password, callback) {
     db.get("SELECT * FROM users WHERE username = ?", [username], async (err, user) => {
         if (err || !user) return callback("User not found", null);
+
         const validPassword = await bcrypt.compare(password, user.password);
-        return callback(validPassword ? null : "Invalid credentials", user);
+        if (!validPassword) return callback("Invalid credentials", null);
+
+        // Only admins can log in
+        if (user.role !== "admin") {
+            return callback("Access Denied! Only admins can log in.", null);
+        }
+
+        return callback(null, { id: user.id, username: user.username, role: user.role });
     });
 }
 

@@ -1,0 +1,20 @@
+{
+  "name": "doc-scanning",
+  "version": "1.0.0",
+  "description": "This is a Document Scanning and matching platform built up using Text Matching Logic: Custom algorithm using Levenshtein distance. I am also planning to integrate the AI powered OCR, NLP approach to increase the doc matching algorithm.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayyush1738/Doc-Scanning.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ayyush1738/Doc-Scanning/issues"
+  },
+  "homepage": "https://github.com/ayyush1738/Doc-Scanning#readme"
+}

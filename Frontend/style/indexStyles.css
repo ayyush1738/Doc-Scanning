@@ -1,0 +1,259 @@
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    margin: 0;
+    padding:0;
+}
+
+
+/* Header Styles */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+#cath-logo {
+    height: 50px;
+}
+
+/* Navigation */
+.nav-container {
+    float: right;
+    width: 500px;
+}
+
+.navItems {
+    list-style: none;
+    display: flex;
+    width: 400px;
+    justify-content: space-between;
+}
+
+.navItems li a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* Responsive Navbar - Hide menu items and show hamburger on small screens */
+@media (max-width: 700px) {
+    .nav-container {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .navItems {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hamburger {
+        display: block;
+        margin-right: 30px;
+    }
+
+    /* Show menu when active */
+    .nav-container.active {
+        display: block;
+    }
+
+    #cath-logo{
+        height: 20px;
+    }
+}
+
+
+.folder{
+    margin-left: 700px;
+}
+
+.hero{
+    margin-top: 80px;
+    height: 300px;
+    background-color: rgb(175, 245, 212);
+    padding: 60px;
+    display: flex;
+}
+
+.quote{
+    font-size: 40px;
+    color: white;
+}
+
+.container {
+    width: 300px;
+    padding: 20px;
+    border-radius: 40px; /* Rounded corners */
+    background-color: rgb(243, 248, 250);
+    box-shadow: 0px 0px 20px rgba(103, 100, 242, 0.866), inset 0 0 0 4px white; /* Outer and Inner shadows */
+}
+
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 10px 0 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.heading{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 900;
+    margin-bottom: 40px;
+}
+
+input, select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 35px;
+    box-shadow: 5px 0px 10px #02438a;
+}
+
+button {
+    background: linear-gradient(to right, #02438a, #2c8ff8);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+p {
+    text-align: center;
+    font-size: 14px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.container {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* Optional: Overlay to darken background */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* From Uiverse.io by vinodjangid07 */ 
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    background-color: #006aff;
+    border: 8px solid #c0dfff;
+    color: white;
+    gap: 8px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .text {
+    font-size: 1.7em;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .svg {
+    padding-top: 5px;
+    height: 100%;
+    width: fit-content;
+  }
+  .svg svg {
+    width: 50px;
+    height: 30px;
+  }
+  .button:hover {
+    border: 8px solid #b1d8ff;
+    background-color: #1b7aff;
+  }
+  .button:active {
+    border: 5px solid #c0dfff;
+  }
+  .button:hover .svg svg {
+    animation: jello-vertical 0.9s both;
+    transform-origin: left;
+  }
+  
+  @keyframes jello-vertical {
+    0% {
+      transform: scale3d(1, 1, 1);
+    }
+    30% {
+      transform: scale3d(0.75, 1.25, 1);
+    }
+    40% {
+      transform: scale3d(1.25, 0.75, 1);
+    }
+    50% {
+      transform: scale3d(0.85, 1.15, 1);
+    }
+    65% {
+      transform: scale3d(1.05, 0.95, 1);
+    }
+    75% {
+      transform: scale3d(0.95, 1.05, 1);
+    }
+    100% {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+  

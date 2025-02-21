@@ -10,7 +10,8 @@ document.getElementById("register-form").addEventListener("submit", async (e) =>
         body: JSON.stringify({ username, password, role })
     });
 
-    alert(await response.text());
+    const data = await response.text();
+    alert(data);
 });
 
 document.getElementById("login-form").addEventListener("submit", async (e) => {
@@ -25,5 +26,14 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     });
 
     const data = await response.json();
-    alert(data.message);
+    
+    if (data.message === "Login successful") {
+        if (data.user.role === "admin") {
+            window.location.href = "../Frontend/dashboard.html"; // Redirect to admin dashboard
+        } else {
+            alert("Access Denied! Only admins can log in.");
+        }
+    } else {
+        alert(data.message);
+    }
 });
