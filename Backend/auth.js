@@ -15,11 +15,6 @@ async function loginUser(username, password, callback) {
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) return callback("Invalid credentials", null);
 
-        // Only admins can log in
-        if (user.role !== "admin") {
-            return callback("Access Denied! Only admins can log in.", null);
-        }
-
         return callback(null, { id: user.id, username: user.username, role: user.role });
     });
 }

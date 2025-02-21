@@ -57,6 +57,13 @@ app.get("/dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, "../Frontend", "dashboard.html"));
 });
 
+app.get("regularUser", (req, res) => {
+    if (!req.session.user || req.session.user.role !== "user") {
+        return res.status(403).send("Access Denied! Only users can access this page.");
+    }
+    res.sendFile(path.join(__dirname, "../Frontend", "user.html"));
+})
+
 // Logout
 app.get("/logout", (req, res) => {
     req.session.destroy(() => {

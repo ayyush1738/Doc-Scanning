@@ -30,8 +30,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     if (data.message === "Login successful") {
         if (data.user.role === "admin") {
             window.location.href = "../Frontend/dashboard.html"; // Redirect to admin dashboard
-        } else {
-            alert("Access Denied! Only admins can log in.");
+        } else if(data.user.role === "user") {
+            window.location.href = "../Frontend/user.html";
         }
     } else {
         alert(data.message);
