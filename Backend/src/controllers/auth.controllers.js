@@ -15,13 +15,25 @@ exports.login = (req, res) => {
     loginUser(username, password, (err, user) => {
         if (err) return res.status(400).json({ message: err });
 
-        // Generate JWT Token
-        const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
+        // Generate JWT Token (Valid for 6 hours)
+        const token = jwt.sign(
+            { id: user.id, username: user.username, role: user.role },
+            JWT_SECRET,
+            { expiresIn: "6h" } // 🔴 Increase expiration to 6h
+        );
 
-        res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "Lax" });
+        res.cookie("token", token, {
+            httpOnly: false,   // 🔴 Allow JavaScript to access the cookie (Only if necessary)
+            secure: false,     // 🔴 Change to `true` if using HTTPS
+            sameSite: "None",  // 🔴 Fixes cross-site request issues
+            maxAge: 6 * 60 * 60 * 1000, // 6 Hours
+        });
+
+        console.log("✅ Token set successfully:", token);
         res.json({ message: "Login successful", user });
     });
 };
+
 
 exports.logout = (req, res) => {
     res.clearCookie("token");
