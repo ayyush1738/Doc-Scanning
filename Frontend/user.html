@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regular User</title>
+    <script defer src="./scripts.js"></script>
+</head>
+<body>
+    <body>
+        <div id="profileContainer">Loading profile...</div>
+        <script defer src="./scripts.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const username = localStorage.getItem("username");
+                if (username) {
+                    showProfile(username);
+                } else {
+                    alert("No username found. Redirecting to login...");
+                    window.location.href = "index.html";
+                }
+            });
+        </script>
+    </body>    
+</body>
+</html>

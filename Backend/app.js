@@ -1,75 +1,57 @@
 const express = require("express");
-const session = require("express-session");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
-const { registerUser, loginUser } = require("./auth");
-const { PORT, SESSION_SECRET } = require("./config");
+const healthcheckRoutes = require("./src/routes/healthcheck.routes.js")
+const authRoutes = require("./src/routes/auth.routes.js");
+const adminRoutes = require("./src/routes/admin.routes.js");
+const userRoutes = require("./src/routes/user.routes.js");
+const resetCredits = require("./src/models/user.model.js")
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../Frontend")));
 
-app.use(cors());
-app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true
-}));
+// CORS Middleware
+app.use((req, res, next) => {
+    const allowedOrigins = ["http://localhost:5500", "http://127.0.0.1:5500"];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+    }
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(204);
+    }
+    next();
+});
+
+setInterval(() => {
+    const now = new Date();
+    if(now.getHours() === 0 && now.getMinutes() === 0) resetCredits();
+    
+}, 60 * 1000)
+
+// Routes
+app.use("/healthcheck", healthcheckRoutes);
+app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes)
+app.use("/user", userRoutes);
 
 // Home Route
 app.get("/", (req, res) => {
     res.redirect("/login");
 });
 
-app.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, "../Frontend", "index.html"));
-});
+// app.get("/login", (req, res) => {
+//     res.sendFile(path.join(__dirname, "../Frontend", "index.html"));
+// });
 
-// Register
-app.post("/auth/register", (req, res) => {
-    const { username, password, role } = req.body;
-    registerUser(username, password, role, (err) => {
-        if (err) return res.status(400).send("Error: " + err.message);
-        res.send("Registration successful.");
-    });
-});
-
-// Login
-app.post("/auth/login", (req, res) => {
-    const { username, password } = req.body;
-    loginUser(username, password, (err, user) => {
-        if (err) return res.status(400).json({ message: err });
-
-        req.session.user = { id: user.id, username: user.username, role: user.role };
-        res.json({ message: "Login successful", user });
-    });
-});
-
-// Dashboard (Admin-Only Route)
-app.get("/dashboard", (req, res) => {
-    if (!req.session.user || req.session.user.role !== "admin") {
-        return res.status(403).send("Access Denied! Only admins can access this page.");
-    }
-    res.sendFile(path.join(__dirname, "../Frontend", "dashboard.html"));
-});
-
-app.get("regularUser", (req, res) => {
-    if (!req.session.user || req.session.user.role !== "user") {
-        return res.status(403).send("Access Denied! Only users can access this page.");
-    }
-    res.sendFile(path.join(__dirname, "../Frontend", "user.html"));
-})
-
-// Logout
-app.get("/logout", (req, res) => {
-    req.session.destroy(() => {
-        res.redirect("/login");
-    });
-});
-
-// Start Server
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+module.exports = app;

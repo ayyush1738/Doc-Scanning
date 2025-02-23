@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ayyush1738/Doc-Scanning/issues"
   },
-  "homepage": "https://github.com/ayyush1738/Doc-Scanning#readme"
+  "homepage": "https://github.com/ayyush1738/Doc-Scanning#readme",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
 }
