@@ -54,7 +54,29 @@
         </table>
     </div>
 
-    <!-- <script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+    const response = await fetch("http://localhost:3000/auth/checkRole", {
+        method: "GET",
+        credentials: "include",  // ✅ Ensures cookies are sent with request
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    const data = await response.json();
+
+    if (response.status === 401) {
+        alert("Session expired! Please log in again.");
+        window.location.href = "index.html";
+    } else if (data.role !== "admin") { // Change this for user.html to "user"
+        alert("Unauthorized Access! Redirecting...");
+        window.location.href = "index.html";
+    }
+});
+
+
+
         async function fetchAnalytics() {
             const response = await fetch("/admin/analytics");
             const data = await response.json();
@@ -108,7 +130,7 @@
         }
 
         fetchAnalytics();
-    </script> -->
+    </script>
 
 </body>
 </html>

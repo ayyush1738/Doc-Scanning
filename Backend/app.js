@@ -19,19 +19,23 @@ app.use(express.static(path.join(__dirname, "../Frontend")));
 
 // CORS Middleware
 app.use((req, res, next) => {
-    const allowedOrigins = ["http://localhost:5500", "http://127.0.0.1:5500"];
+    const allowedOrigins = ["http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000"];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.header("Access-Control-Allow-Origin", origin);
     }
-    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Credentials", "true"); // ✅ Required for cookies
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
     if (req.method === "OPTIONS") {
         return res.sendStatus(204);
     }
     next();
 });
+
+
+
 
 setInterval(() => {
     const now = new Date();

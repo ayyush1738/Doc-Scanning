@@ -8,6 +8,69 @@
 <body>
     <body>
         <div id="profileContainer">hello</div>
+        <h2>Upload Document for Scanning</h2>
+<form id="upload-form" enctype="multipart/form-data">
+    <input type="file" id="file-input" accept=".txt" required>
+    <button type="submit">Upload & Scan</button>
+</form>
+
+<h3>Matching Documents</h3>
+<ul id="matches"></ul>
+
+<script>
+document.getElementById("upload-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const fileInput = document.getElementById("file-input").files[0];
+    if (!fileInput) {
+        alert("Please select a file!");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("document", fileInput);
+
+    const response = await fetch("/user/upload", {
+        method: "POST",
+        body: formData,
+        credentials: "include"
+    });
+
+    const data = await response.json();
+
+    if (data.matches) {
+        const matchList = document.getElementById("matches");
+        matchList.innerHTML = "";
+        data.matches.forEach(match => {
+            const li = document.createElement("li");
+            li.textContent = `Match: ${match.filename} - Score: ${match.score}`;
+            matchList.appendChild(li);
+        });
+    } else {
+        alert("No matching documents found.");
+    }
+});
+document.addEventListener("DOMContentLoaded", async () => {
+    const response = await fetch("http://localhost:3000/auth/checkRole", {
+        method: "GET",
+        credentials: "include",  // ✅ Ensures cookies are sent with request
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    const data = await response.json();
+
+    if (response.status === 401) {
+        alert("Session expired! Please log in again.");
+        window.location.href = "index.html";
+    } else if (data.role !== "user") { // Change this for user.html to "user"
+        alert("Unauthorized Access! Redirecting...");
+        window.location.href = "index.html";
+    }
+});
+
+        </script>
     </body>    
 </body>
 </html>
