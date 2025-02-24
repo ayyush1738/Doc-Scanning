@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
 const path = require("path");
 const healthcheckRoutes = require("./src/routes/healthcheck.routes.js")
 const authRoutes = require("./src/routes/auth.routes.js");
@@ -11,20 +10,17 @@ const resetCredits = require("./src/models/user.model.js")
 
 const app = express();
 
-// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../Frontend")));
-
-// CORS Middleware
 app.use((req, res, next) => {
     const allowedOrigins = ["http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000"];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.header("Access-Control-Allow-Origin", origin);
     }
-    res.header("Access-Control-Allow-Credentials", "true"); // ✅ Required for cookies
+    res.header("Access-Control-Allow-Credentials", "true"); 
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
@@ -33,9 +29,6 @@ app.use((req, res, next) => {
     }
     next();
 });
-
-
-
 
 setInterval(() => {
     const now = new Date();
@@ -49,13 +42,9 @@ app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes)
 app.use("/user", userRoutes);
 
-// Home Route
 app.get("/", (req, res) => {
     res.redirect("/login");
 });
 
-// app.get("/login", (req, res) => {
-//     res.sendFile(path.join(__dirname, "../Frontend", "index.html"));
-// });
 
 module.exports = app;

@@ -4,7 +4,7 @@ const path = require("path");
 // Connect to the SQLite database
 const db = new sqlite3.Database(path.join(__dirname, "../../../database/users.db"), (err) => {
     if (err) console.error(err.message);
-    console.log("✅ Connected to the SQLite database.");
+    console.log("Connected to the SQLite database.");
 });
 
 // Create Users table
