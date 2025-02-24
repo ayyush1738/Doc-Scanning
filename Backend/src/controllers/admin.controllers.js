@@ -9,23 +9,24 @@ exports.getDashboard = (req, res) => {
     res.sendFile(path.join(__dirname, "../../Frontend", "dashboard.html"));
 };
 
+
 exports.getAdminAnalytics = (req, res) => {
     if (req.user.role !== "admin") {
         return res.status(403).json({ message: "Access Denied!" });
     }
 
-    db.all("SELECT COUNT(*) as total_scans_today FROM documents WHERE date(upload_date) = date('now')", [], (err, result) => {
+    db.get("SELECT COUNT(*) as total_scans_today FROM documents WHERE date(upload_date) = date('now')", [], (err, result) => {
         if (err) return res.status(500).json({ message: "Database error" });
-        const totalScans = result[0]?.total_scans_today || 0;
+        const totalScans = result ? result.total_scans_today : 0;
 
         db.all("SELECT filename FROM documents GROUP BY filename ORDER BY COUNT(*) DESC LIMIT 5", [], (err, topics) => {
             if (err) return res.status(500).json({ message: "Database error" });
             const topTopics = topics.map(t => t.filename);
 
-            db.all("SELECT username, COUNT(*) as total_scans FROM users JOIN documents ON users.id = documents.user_id GROUP BY users.id ORDER BY total_scans DESC LIMIT 5", [], (err, topUsers) => {
+            db.all("SELECT users.username, COUNT(documents.id) as total_scans FROM users LEFT JOIN documents ON users.id = documents.user_id GROUP BY users.id ORDER BY total_scans DESC LIMIT 5", [], (err, topUsers) => {
                 if (err) return res.status(500).json({ message: "Database error" });
 
-                db.all("SELECT username, credits FROM users", [], (err, userScans) => {
+                db.all("SELECT users.username, IFNULL(daily.scans_today, 0) as scans_today, COUNT(documents.id) as total_scans, users.credits FROM users LEFT JOIN (SELECT user_id, COUNT(id) as scans_today FROM documents WHERE date(upload_date) = date('now') GROUP BY user_id) daily ON users.id = daily.user_id LEFT JOIN documents ON users.id = documents.user_id GROUP BY users.id", [], (err, userScans) => {
                     if (err) return res.status(500).json({ message: "Database error" });
                     res.json({ total_scans_today: totalScans, top_topics: topTopics, top_users: topUsers, user_scans: userScans });
                 });
@@ -33,6 +34,7 @@ exports.getAdminAnalytics = (req, res) => {
         });
     });
 };
+
 
 exports.getCreditRequests = (req, res) => {
     db.all("SELECT id, username, requested_credits FROM credit_requests WHERE status = 'pending'", [], (err, requests) => {
