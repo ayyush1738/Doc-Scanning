@@ -7,7 +7,7 @@ const db = new sqlite3.Database(path.join(__dirname, "../../../database/users.db
     console.log("Connected to the SQLite database.");
 });
 
-// Create Users table
+// Create Users table with dynamic credit assignment
 db.serialize(()=> {
     db.run(`
         CREATE TABLE IF NOT EXISTS users (
@@ -33,6 +33,22 @@ db.serialize(()=> {
         status TEXT DEFAULT 'pending',
         FOREIGN KEY(user_id) REFERENCES users(id)
     )`);
+
+    // Create a trigger to set credits based on role
+    db.run(`
+        CREATE TRIGGER IF NOT EXISTS set_credits_on_insert
+        BEFORE INSERT ON users
+        FOR EACH ROW
+        WHEN NEW.credits IS NULL
+        BEGIN
+            UPDATE users
+            SET credits = CASE 
+                WHEN NEW.role = 'admin' THEN 1000
+                ELSE 20
+            END
+            WHERE id = NEW.id;
+        END;
+    `);
 });
 
 module.exports = db;
