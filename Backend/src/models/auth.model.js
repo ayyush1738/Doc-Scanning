@@ -16,3 +16,5 @@ exports.loginUser = async (username, password, callback) => {
         return callback(null, { id: user.id, username: user.username, role: user.role });
     });
 };
+
+
