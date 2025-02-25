@@ -106,6 +106,10 @@ async function showProfile(username) {
         const response = await fetch(`http://localhost:3000/user/regularUser?username=${username}`);
         const profile = await response.json();
 
+        if (!profile.pastScans) {
+            profile.pastScans = []; // ✅ Ensure pastScans is always an array
+        }
+
         const profileContainer = document.getElementById("profileContainer");
         if (!profileContainer) return;
 
@@ -113,16 +117,15 @@ async function showProfile(username) {
             <h1>Welcome, ${profile.username}</h1>
             <p>Credits: ${profile.role === 'admin' ? 'Unlimited' : profile.credits} | Role: ${profile.role}</p>
             <h2>Past Scans</h2>
-            <ul id="pastScansList"></ul>
+            <ul id="pastScansList">
+                ${profile.pastScans.length > 0 ? profile.pastScans.map(doc => `
+                    <li>
+                        ${doc.filename} (${doc.upload_date}) 
+                        <button onclick="findMatches(${doc.id}, '${username}')">Find Matches</button>
+                    </li>
+                `).join('') : "<li>No past scans available.</li>"}
+            </ul>
         `;
-
-        const pastScansList = document.getElementById("pastScansList");
-        profile.pastScans.forEach(doc => {
-            const li = document.createElement("li");
-            li.innerHTML = `${doc.filename} (${doc.upload_date}) 
-                <button onclick="findMatches(${doc.id}, '${username}')">Find Matches</button>`;
-            pastScansList.appendChild(li);
-        });
 
         // Show credit request section for regular users
         if (profile.role === 'user') {
@@ -133,6 +136,8 @@ async function showProfile(username) {
         console.error("Error fetching profile:", error);
     }
 }
+
+
 
 /**
  * Upload document for scanning
@@ -146,6 +151,9 @@ async function uploadDocument(e) {
         return;
     }
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("username");
+
     const formData = new FormData();
     formData.append("document", fileInput);
 
@@ -157,51 +165,91 @@ async function uploadDocument(e) {
         });
 
         const data = await response.json();
-        const matchList = document.getElementById("matches");
 
-        matchList.innerHTML = data.matches.length > 0
-            ? data.matches.map(match => `<li>Match: ${match.filename} - Score: ${match.score}</li>`).join('')
-            : "<li>No matching documents found.</li>";
+        if (!response.ok) {
+            throw new Error(data.message || "File upload failed!");
+        }
+
+        alert("File uploaded successfully!");
+        await showProfile(username); // ✅ Refresh profile to display uploaded file
+
     } catch (error) {
         console.error("Error uploading document:", error);
     }
 }
 
+
 /**
  * Find matches for a scanned document
  */
+// async function findMatches(docId, username) {
+//     try {
+//         const data = await response.json();
+
+//         alert(data.matches.length > 0 ? `Found ${data.matches.length} matches!` : "No matches found.");
+//     } catch (error) {
+//         console.error("Error finding matches:", error);
+//     }
+// }
+
 async function findMatches(docId, username) {
     try {
-        const response = await fetch(`http://localhost:3000/user/matches?docId=${docId}&username=${username}`);
+        const response = await fetch(`http://localhost:3000/user/regularUser/matches/${docId}?username=${username}`, {
+            credentials: 'include' // Add this to ensure cookies are sent
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
 
-        alert(data.matches.length > 0 ? `Found ${data.matches.length} matches!` : "No matches found.");
+        if (!data || !Array.isArray(data.matches)) {
+            alert("No matches found.");
+            return;
+        }
+
+        // Display matches in the UI
+        const matchesList = document.getElementById("matches");
+        if (matchesList) {
+            matchesList.innerHTML = data.matches.length > 0 
+                ? data.matches.map(match => `
+                    <li>
+                        <strong>${match.filename}</strong> 
+                        (Similarity: ${(match.similarity * 100).toFixed(1)}%)
+                    </li>
+                `).join('')
+                : "<li>No matching documents found.</li>";
+        }
+
+        alert(`Found ${data.matches.length} matches!`);
     } catch (error) {
         console.error("Error finding matches:", error);
+        alert("Error finding matches. Please try again.");
     }
 }
 
 /**
  * Request credits for the user
  */
-async function requestCredits(username) {
-    const creditAmount = document.getElementById("creditAmount").value;
-    if (!creditAmount || creditAmount <= 0) {
-        alert("Please enter a valid amount.");
-        return;
-    }
+// async function requestCredits(username) {
+//     const creditAmount = document.getElementById("creditAmount").value;
+//     if (!creditAmount || creditAmount <= 0) {
+//         alert("Please enter a valid amount.");
+//         return;
+//     }
 
-    try {
-        const response = await fetch("http://localhost:3000/user/requestCredits", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, amount: creditAmount }),
-            credentials: "include"
-        });
+//     try {
+//         const response = await fetch("http://localhost:3000/user/requestCredits", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({ username, amount: creditAmount }),
+//             credentials: "include"
+//         });
 
-        const result = await response.json();
-        alert(result.message || "Credit request submitted!");
-    } catch (error) {
-        console.error("Error requesting credits:", error);
-    }
-}
+//         const result = await response.json();
+//         alert(result.message || "Credit request submitted!");
+//     } catch (error) {
+//         console.error("Error requesting credits:", error);
+//     }
+// }
