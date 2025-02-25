@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.get("/regularUser", authenticateToken, getUserPage);
 router.post("/regularUser/upload", authenticateToken, upload.single("document"), uploadDocument);
-router.get('/regularUser/matches/:docId', authenticateToken, matchDocument);
-
+router.get("/regularUser/matches/:docId", authenticateToken, matchDocument); // ✅ Ensure this route exists
 
 module.exports = router;

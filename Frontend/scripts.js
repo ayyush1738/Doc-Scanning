@@ -137,8 +137,6 @@ async function showProfile(username) {
     }
 }
 
-
-
 /**
  * Upload document for scanning
  */
@@ -193,16 +191,21 @@ async function uploadDocument(e) {
 // }
 
 async function findMatches(docId, username) {
+    console.log(`Attempting to fetch matches for docId: ${docId}, username: ${username}`);
+
     try {
         const response = await fetch(`http://localhost:3000/user/regularUser/matches/${docId}?username=${username}`, {
-            credentials: 'include' // Add this to ensure cookies are sent
+            credentials: 'include' // Ensure cookies are sent for authentication
         });
+
+        console.log("Response received:", response); // ✅ Log response
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("Match Data:", data); // ✅ Log the returned matches
 
         if (!data || !Array.isArray(data.matches)) {
             alert("No matches found.");
@@ -212,7 +215,7 @@ async function findMatches(docId, username) {
         // Display matches in the UI
         const matchesList = document.getElementById("matches");
         if (matchesList) {
-            matchesList.innerHTML = data.matches.length > 0 
+            matchesList.innerHTML = data.matches.length > 0
                 ? data.matches.map(match => `
                     <li>
                         <strong>${match.filename}</strong> 
@@ -228,6 +231,7 @@ async function findMatches(docId, username) {
         alert("Error finding matches. Please try again.");
     }
 }
+
 
 /**
  * Request credits for the user

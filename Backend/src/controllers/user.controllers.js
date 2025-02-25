@@ -30,16 +30,13 @@ function levenshteinDistance(s1, s2) {
     return matrix[len1][len2];
 }
 
-// Modified matchDocument function with better error handling
+
 exports.matchDocument = (req, res) => {
     const docId = req.params.docId;
-    
-    // First, get the source document
+    console.log("matchDocument API called for docId:", docId); // ✅ Debugging log
+
     db.get(
-        `SELECT d.id, d.filename, d.content, u.username 
-         FROM documents d 
-         JOIN users u ON d.user_id = u.id 
-         WHERE d.id = ?`, 
+        `SELECT d.id, d.filename, d.content FROM documents d WHERE d.id = ?`, 
         [docId], 
         (err, sourceDoc) => {
             if (err) {
@@ -48,17 +45,16 @@ exports.matchDocument = (req, res) => {
             }
             
             if (!sourceDoc) {
+                console.log("Document not found in DB.");
                 return res.status(404).json({ message: 'Document not found', matches: [] });
             }
 
-            if (!sourceDoc.content) {
-                return res.status(400).json({ 
-                    message: 'Source document has no content to compare', 
-                    matches: [] 
-                });
+            if (!sourceDoc.content || sourceDoc.content.trim() === "") {
+                console.log("Document has no content:", sourceDoc);
+                return res.status(400).json({ message: 'Source document has no content to compare', matches: [] });
             }
 
-            // Get all other documents to compare
+            // Proceed with document matching...
             db.all(
                 `SELECT d.id, d.filename, d.content 
                  FROM documents d 
@@ -91,9 +87,11 @@ exports.matchDocument = (req, res) => {
                     });
                 }
             );
+            
         }
     );
 };
+
 
 
 exports.uploadDocument = (req, res) => {
@@ -139,8 +137,6 @@ exports.uploadDocument = (req, res) => {
         });
     });
 };
-
-
 
 
 
