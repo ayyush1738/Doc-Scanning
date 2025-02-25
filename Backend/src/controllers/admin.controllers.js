@@ -15,7 +15,7 @@ exports.getAdminAnalytics = (req, res) => {
         return res.status(403).json({ message: "Access Denied!" });
     }
 
-    db.get("SELECT COUNT(*) as total_scans_today FROM documents WHERE date(upload_date) = date('now')", [], (err, result) => {
+    db.get("SELECT COUNT(*) as total_scans_today FROM documents WHERE DATE(upload_date, 'localtime') = DATE('now', 'localtime')", [], (err, result) => {
         if (err) return res.status(500).json({ message: "Database error" });
         const totalScans = result ? result.total_scans_today : 0;
 
@@ -36,7 +36,10 @@ exports.getAdminAnalytics = (req, res) => {
                         db.all("SELECT id, username, (20 - credits) AS credits_used FROM users", [], (err, creditsUsed) => {
                             if(err) return res.status(500).json({message: "Database error"});
 
-                            res.json({ total_scans_today: totalScans, top_topics: topTopics, top_users: topUsers, user_scans: userScans, credits_used: creditsUsed, all_users: allUsers });
+                            db.all("SELECT id, username, (20 - credits) AS top_credits FROM users ORDER BY top_credits DESC LIMIT 5", [], (err, topCredits) => {
+                                if(err) return res.status(500).json({message: "Database error"});
+                                res.json({ total_scans_today: totalScans, top_topics: topTopics, top_users: topUsers, user_scans: userScans, credits_used: creditsUsed, all_users: allUsers, top_credits: topCredits });
+                            })
                         })
                     });
                 });

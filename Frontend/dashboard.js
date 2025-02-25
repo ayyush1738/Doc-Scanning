@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     createDoughnutChart(data.top_users);
 
-    createBarChart(data.credits_used);
+    createBarChart(data.top_credits);
 
     const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
     tableBody.innerHTML = "";
@@ -67,38 +67,53 @@ function createDoughnutChart(topUsers) {
             datasets: [{
                 label: "Scans",
                 data: topUsers.map(user => user.total_scans),
-                backgroundColor: ["#007bff", "#28a745", "#ff5733", "#ffc107", "#6c757d"]
+                backgroundColor: ["#04fab7", "#ffc733", "#9333ff", "#fc1091", "#6c757d"]
             }]
         }
     });
 }
 
 
-function createBarChart(topUsers) {
+function createBarChart(topCredits) {
     const ctx = document.getElementById("creditChart").getContext("2d");
     new Chart(ctx, {
         type: "bar",
         data: {
-            labels: topUsers.map(user => user.username),
+            labels: topCredits.map(user => user.username),
             datasets: [{
                 label: "Credits Used",
-                data: topUsers.map(user => user.credits_used || 0),
-                backgroundColor: "rgba(75, 192, 192, 0.5)"
+                data: topCredits.map(user => user.top_credits || 0),
+                backgroundColor: "rgba(247, 68, 68, 0.75)"
+
             }]
         },
         options: {
             responsive: true,
             scales: {
+                x: {
+                    grid: {
+                        display: false // Hides vertical grid lines
+                    }
+                },
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 2 // Ensures scale increments by 5
+                        stepSize: 0.5
+                    },
+                    grid: {
+                        display: false // Hides horizontal grid lines
                     }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // Hides the dataset label box
                 }
             }
         }
     });
 }
+
 
 // Function to filter table based on search input
 function filterScansTable() {
