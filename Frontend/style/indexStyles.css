@@ -1,8 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     height: 100vh;
     margin: 0;
     padding:0;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 
@@ -28,7 +30,8 @@ body {
 /* Navigation */
 .nav-container {
     float: right;
-    width: 500px;
+    width: 400px;
+    margin-right: 200px;
 }
 
 .navItems {
@@ -57,7 +60,6 @@ body {
         display: none;
         position: absolute;
         top: 70px;
-        right: 20px;
         background: white;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         padding: 10px;
@@ -68,6 +70,7 @@ body {
         display: flex;
         flex-direction: column;
         gap: 10px;
+        width: 150px;
     }
 
     .hamburger {
@@ -78,25 +81,41 @@ body {
     /* Show menu when active */
     .nav-container.active {
         display: block;
+        width: 200px;
+        float: right;
+        text-align: center;
+        margin-left: 35%;
     }
 
     #cath-logo{
-        height: 20px;
+        height: 30px;
     }
 
     .folder{
-        
+        display: none;
+    }
+
+    .hero{
+        margin-top: 0px;
+        text-align: center;
     }
 }
 
 
-.folder{
-    margin-left: 700px;
+.hero {
+    justify-content: space-between; /* Pushes content to the edges */
+    align-items: center; /* Aligns items vertically */
 }
 
+.folder {
+    margin-left: auto;
+    margin-right: 100px;
+}
+
+
 .hero{
-    margin-top: 80px;
-    height: 300px;
+    margin-top: 60px;
+    height: 400px;
     background-color: rgb(175, 245, 212);
     padding: 60px;
     display: flex;
@@ -112,7 +131,13 @@ body {
     padding: 20px;
     border-radius: 40px; /* Rounded corners */
     background-color: rgb(243, 248, 250);
-    box-shadow: 0px 0px 20px rgba(103, 100, 242, 0.866), inset 0 0 0 4px white; /* Outer and Inner shadows */
+    box-shadow: 0px 0px 20px rgba(103, 100, 242, 0.866), inset 0 0 0 4px white; 
+}
+
+#main{
+    width: 100%;
+    justify-items: center;
+    height: 500px;
 }
 
 
@@ -261,3 +286,145 @@ a {
     }
   }
   
+  .slider-container { 
+      width: 1000px;
+      height: 600px; 
+      overflow: hidden; 
+      position: relative; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .slider { 
+      display: flex;
+      width: 2000px; 
+  }
+  
+  .card { 
+      width: 800px; 
+      height: 400px; 
+      margin: 10px; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      font-size: 24px; 
+      color: white; 
+      font-weight: bold; 
+      border-radius: 10px; 
+      transition: transform 0.5s linear;
+      text-align: center; 
+      overflow: hidden;
+  }
+
+  .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      filter: blur(2px);
+  }
+
+  .card section{
+      font-size: 20px;
+      margin-top: 10px;
+  }
+
+  #main-head{
+      font-size: 40px;
+      margin-top: 100px;
+      text-align: center;
+  }
+
+  .card {
+    width: 800px; 
+    height: 500px;
+    position: relative; /* Make it a reference for absolute positioning */
+    overflow: hidden; /* Prevents content from overflowing */
+}
+
+.card img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Ensures image covers the card */
+}
+
+.card section {
+    position: absolute;
+    color: rgb(61, 54, 54);
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    bottom: 400px;
+}
+
+.card p {
+    position: absolute;
+    color: rgb(87, 77, 77);
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 300px;
+}
+
+
+.footer{
+    background:#000;
+    padding:30px 0px;
+    font-family: 'Play', sans-serif;
+    text-align:center;
+    margin-top: 400px;
+    width: 100%;
+    justify-items: center;
+    }
+    
+    .footer .row{
+    margin:1% 0%;
+    padding:0.6% 0%;
+    color:gray;
+    font-size:0.8em;
+    width:80%;
+    text-align: center;
+    justify-items: center;
+    }
+    
+    .footer .row a{
+    text-decoration:none;
+    color:gray;
+    transition:0.5s;
+    }
+    
+    .footer .row a:hover{
+    color:#fff;
+    }
+    
+    .footer .row ul{
+    width:60%;
+    }
+    
+    .footer .row ul li{
+    display:inline-block;
+    margin:0px 30px;
+    }
+    
+    .footer .row a i{
+    font-size:2em;
+    margin:0% 1%;
+    }
+    
+    @media (max-width:720px){
+    .footer{
+    text-align:left;
+    padding:5%;
+    }
+    .footer .row ul li{
+    display:block;
+    margin:10px 0px;
+    text-align:left;
+    }
+    .footer .row a i{
+    margin:0% 3%;
+    }
+    }

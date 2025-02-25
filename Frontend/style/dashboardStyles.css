@@ -1,18 +1,72 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: #e0e2e4;
     margin: 0;
+    display: flex;
+    padding: 20px 20px 20px 20px;
+}
+
+.sidebar {
+    height: 80%;
+    width: 200px;
+    position: fixed;
+    background-color: #ffffff;
+    color: white;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding-top: 100px;
+    margin-bottom: 50px;
+    padding-inline: 20px;
+    text-align: center;
+}
+
+.sidebar a {
+    display: block;
+    color: black;
+    padding: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 15px;
+    margin:5px;
+    border-radius: 20px;
+}
+
+
+.sidebar h2 {
+    color: black;
+    margin-bottom: 50px;
+}
+
+.sidebar a.active {
+    background-color: #505357;
+    color:white;
+}
+
+/* Logout button styling */
+.logout-section {
     padding: 20px;
     text-align: center;
 }
 
-.dashboard-container {
-    max-width: 800px;
-    margin: auto;
-    background: white;
+.logout-btn{
+    border-style: none;
+    background-color: #ffffff;
+    margin-top: 200px;
+}
+
+.logout-btn img{
+    height: 200px;
+    cursor: pointer;
+    height: 30px;
+}
+
+/* Content area */
+.content {
+    margin-left: 260px;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .stats-grid {
@@ -23,13 +77,30 @@ body {
 }
 
 .stat-card {
-    background: #007bff;
+    background: #505357;
     color: white;
     padding: 15px;
     border-radius: 5px;
     text-align: center;
+    height: 500px;
+    justify-content: center;
+    align-items: center;
 }
 
+#top-topics{
+    margin-top: 100px;
+}
+
+#total-scans{
+    margin-top: 25%;
+    font-size: 80px;
+}
+
+#topics{
+    width: 50%;
+}
+
+/* Table styles */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -39,6 +110,7 @@ table {
 th, td {
     padding: 10px;
     border: 1px solid #ddd;
+    text-align: center;
 }
 
 th {
@@ -46,49 +118,43 @@ th {
     color: white;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+/* Hide all pages initially */
+.page {
+    display: none;
 }
 
-.sidebar {
-    height: 100vh;
-    width: 250px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    color: white;
-    padding-top: 20px;
-    transition: width 0.3s;
-}
-
-.sidebar a {
+.active-page {
     display: block;
-    color: white;
-    padding: 15px;
-    text-decoration: none;
-    font-size: 18px;
-    border-bottom: 1px solid #444;
 }
 
-.sidebar a:hover {
-    background-color: #575757;
+
+/* Make #top-topics a scrollable container */
+#top-topics {
+    margin-top: 80px;
+    max-height: 300px;  /* Set a max height for scrolling */
+    overflow-y: auto;   /* Enable vertical scrolling */
+    padding: 10px;
+    background:#505357;
+    border-radius: 5px;
 }
 
-/* Content area */
-.content {
-    margin-left: 250px;
-    padding: 20px;
+/* Optional: Customize scrollbar */
+#top-topics::-webkit-scrollbar {
+    width: 6px;
 }
 
-/* Hover Effect: Expand Sidebar on Hover */
-.sidebar:hover {
-    width: 300px;
+#top-topics::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
 }
 
-/* Active link style */
-.active {
-    background-color: #575757;
+#top-topics::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
 }
 
+
+.highlight-topic {
+    color: blue;
+    font-weight: bold;
+    font-size: 30px;
+}
