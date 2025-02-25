@@ -5,7 +5,6 @@ const fs = require("fs");
 
 // Levenshtein Distance Function (Basic Text Similarity)
 function levenshteinDistance(s1, s2) {
-    // Handle null or undefined inputs
     if (!s1 || !s2) return 0;
     
     s1 = s1.toString();

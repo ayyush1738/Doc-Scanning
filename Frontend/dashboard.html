@@ -51,15 +51,29 @@
         <div id="page3" class="page">
             <h2>Credit Usage Stats</h2>
             <canvas id="creditChart"></canvas>
+            <input type="text" id="searchCreditsUser" placeholder="Search by Uid" onkeyup="filterCreditsTable()">
+            <table id="credit-scans-table">
+                <thead>
+                    <tr>
+                        <th>Uid</th>
+                        <th>Username</th>
+                        <th>Credits Used</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
 
         <!-- Page 4: Scans per User Table -->
         <div id="page4" class="page">
             <h2>Scans per User</h2>
+            <!-- Search bar -->
+            <input type="text" id="searchUser" placeholder="Search by Uid" onkeyup="filterScansTable()">
             <table id="user-scans-table">
                 <thead>
                     <tr>
-                        <th>User</th>
+                        <th>Uid</th>
+                        <th>Username</th>
                         <th>Scans Today</th>
                         <th>Total Scans</th>
                         <th>Remaining Credits</th>

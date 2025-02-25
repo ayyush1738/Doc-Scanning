@@ -105,16 +105,17 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    height: 800px;
 }
 
 th, td {
     padding: 10px;
-    border: 1px solid #ddd;
     text-align: center;
 }
 
+
 th {
-    background: #007bff;
+    background: #505357;
     color: white;
 }
 
@@ -154,7 +155,36 @@ th {
 
 
 .highlight-topic {
-    color: blue;
+    color: rgb(136, 255, 0);
     font-weight: bold;
     font-size: 30px;
 }
+
+table tbody tr:nth-child(odd) {
+    background-color: rgb(255, 255, 255);
+}
+
+table tbody tr:nth-child(even) {
+    background-color: rgb(72, 74, 75);
+    color: white;
+}
+
+#searchUser{
+    border-style: none;
+    margin-bottom: 20px;
+    height: 40px;
+    border-radius: 40px;
+    width: 300px;
+    padding: 10px;
+}
+
+#searchCreditsUser{
+    border-style: none;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    height: 40px;
+    border-radius: 40px;
+    width: 300px;
+    padding: 10px;
+}
+

@@ -15,17 +15,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     .join("<br><br>");
 
 
-    // Update Page 2: Top Users by Scans (Circular Graph)
     createDoughnutChart(data.top_users);
 
-    // Update Page 3: Credit Usage Stats (Bar Graph)
     createBarChart(data.credits_used);
 
-    // Update Page 4: Scans per User Table
     const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
     tableBody.innerHTML = "";
     data.user_scans.forEach(user => {
         let row = `<tr>
+            <td>${user.id}</td>
             <td>${user.username}</td>
             <td>${user.scans_today}</td>
             <td>${user.total_scans}</td>
@@ -33,6 +31,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         </tr>`;
         tableBody.innerHTML += row;
     });
+
+    const tableBody2 = document.getElementById("credit-scans-table").querySelector("tbody");
+    tableBody2.innerHTML = "";
+    data.credits_used.forEach(user => {
+        let row = `<tr>
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.credits_used}</td>
+        </tr>`
+        tableBody2.innerHTML += row;
+    })
 
     // Default page load
     showPage(1);
@@ -90,6 +99,45 @@ function createBarChart(topUsers) {
         }
     });
 }
+
+// Function to filter table based on search input
+function filterScansTable() {
+    let input = document.getElementById("searchUser").value.toLowerCase();
+    let table = document.getElementById("user-scans-table");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
+        let usernameCell = rows[i].getElementsByTagName("td")[0]; // Username is in the first column
+        if (usernameCell) {
+            let username = usernameCell.textContent || usernameCell.innerText;
+            if (username.toLowerCase().includes(input)) {
+                rows[i].style.display = ""; // Show matching rows
+            } else {
+                rows[i].style.display = "none"; // Hide non-matching rows
+            }
+        }
+    }
+}
+
+function filterCreditsTable() {
+    let input = document.getElementById("searchCreditsUser").value.toLowerCase();
+    let table = document.getElementById("credit-scans-table");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
+        let usernameCell = rows[i].getElementsByTagName("td")[0]; // Username is in the first column
+        if (usernameCell) {
+            let username = usernameCell.textContent || usernameCell.innerText;
+            if (username.toLowerCase().includes(input)) {
+                rows[i].style.display = ""; // Show matching rows
+            } else {
+                rows[i].style.display = "none"; // Hide non-matching rows
+            }
+        }
+    }
+}
+
+
 
 
 // Logout Function
