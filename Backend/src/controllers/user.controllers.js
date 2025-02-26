@@ -170,3 +170,18 @@ exports.getUserPage = (req, res) => {
         });
     });
 };
+
+exports.getCredits = (req, res) => {
+    const { username, requested_credits } = req.body;
+    db.get(`SELECT id, role FROM users WHERE username = ?`, [username], (err, user) => {
+        if(err || !user) return  res.status(404).send('User not found');
+        if(user.role === 'admin') return res.status(403).send("Admins have unlimited credits");
+        db.run(`INSERT INTO credit_requests (user_id, requested_credits) VALUES (?, ?)`, [user.id, requested_credits], (err) => {
+            if(err) return res.status(500).send("Request Failed");
+            res.json({
+                message: "Request Submitted Successfully",
+                requested_credits
+            });
+        })
+    })
+}

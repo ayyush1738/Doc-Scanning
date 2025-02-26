@@ -5,20 +5,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Update Page 1: Total Scans Today
     document.getElementById("total-scans").innerText = data.total_scans_today;
     document.getElementById("top-topics").innerHTML = data.top_topics
-    .map((topic, index) => {
-        if (index < 3) {
-            return `<span class="highlight-topic">${topic}</span>`; // Highlight top 3
-        } else {
-            return `<span>${topic}</span>`; // Normal text for the rest
-        }
-    })
-    .join("<br><br>");
-
+        .map((topic, index) => {
+            if (index < 3) {
+                return `<span class="highlight-topic">${topic}</span>`; // Highlight top 3
+            } else {
+                return `<span>${topic}</span>`; // Normal text for the rest
+            }
+        })
+        .join("<br><br>");
 
     createDoughnutChart(data.top_users);
-
     createBarChart(data.top_credits);
 
+    // Populate Scans per User Table
     const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
     tableBody.innerHTML = "";
     data.user_scans.forEach(user => {
@@ -28,10 +27,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             <td>${user.scans_today}</td>
             <td>${user.total_scans}</td>
             <td>${user.credits}</td>
+            <td>${user.pending_requests}</td>  <!-- Display pending credit requests -->
         </tr>`;
         tableBody.innerHTML += row;
     });
 
+    // Populate Credit Usage Table
     const tableBody2 = document.getElementById("credit-scans-table").querySelector("tbody");
     tableBody2.innerHTML = "";
     data.credits_used.forEach(user => {
@@ -39,13 +40,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             <td>${user.id}</td>
             <td>${user.username}</td>
             <td>${user.credits_used}</td>
-        </tr>`
+        </tr>`;
         tableBody2.innerHTML += row;
-    })
+    });
 
     // Default page load
     showPage(1);
 });
+
 
 // Function to switch between pages
 function showPage(pageNumber) {
@@ -151,6 +153,8 @@ function filterCreditsTable() {
         }
     }
 }
+
+
 
 
 

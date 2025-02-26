@@ -4,25 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regular User</title>
-    <link rel="stylesheet" href="./style//userStyles.css">
+    <link rel="stylesheet" href="./style/userStyles.css">
 </head>
 <body>
-    <div id="profileContainer"></div>
+    <header id="nav-items">
+        <div id="welcome">
+            <h1 id="welcomeMessage"></h1>
+        </div>
+        <div id="details">
+            <p id="userDetails"></p>
+        </div>
+    </header>
+    <section class="grid-container">
+        <div id="profileContainer" class="grid-item profile">
+            <h2>Past Scans</h2>
+            <ul id="pastScansList">
+                
+            </ul>
+        </div>
 
-    <h2>Upload Document</h2>
-    <form id="upload-form" enctype="multipart/form-data">
-        <input type="file" id="file-input" accept=".txt" required>
-        <button type="submit">Upload & Scan</button>
-    </form>
+        <div class="grid-item upload">
+            <h2>Upload Document</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <div class="container">
+                    <div class="folder">
+                      <div class="front-side">
+                        <div class="tip"></div>
+                        <div class="cover"></div>
+                      </div>
+                      <div class="back-side cover"></div>
+                    </div>
+                    <label class="custom-file-upload">
+                      <input type="file" class="title" id="file-input" accept=".txt" required>
+                      Choose a file
+                    </label>
+                  </div>
+                <button id="scan-btn" type="submit">Scan</button>
+            </form>
+        </div>
 
-    <h3>Matching Documents</h3>
-    <ul id="matches"></ul>
+        <!-- Matching Documents -->
+        <div class="grid-item matches">
+            <h3>Matching Documents</h3>
+            <ul id="matches"></ul>
+        </div>
 
-    <div id="creditRequestSection" style="display: none;">
-        <h2>Request Credits</h2>
-        <input id="creditAmount" type="number" placeholder="Amount">
-        <button id="requestCreditsBtn">Request</button>
-    </div>
+        <!-- Credit Request Section -->
+        <div id="creditRequestSection" class="grid-item credits" style="display: none;">
+            <h2>Request Credits</h2>
+            <input id="creditAmount" type="number" placeholder="Amount">
+            <button id="requestCreditsBtn">Request</button> <!-- Button without form -->
+        </div>        
+    </section>
     <script defer src="./scripts.js"></script>
 </body>
 </html>

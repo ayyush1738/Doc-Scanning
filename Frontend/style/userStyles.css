@@ -1,69 +1,223 @@
-/* General Page Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #01011f;
-    color: #333;
     margin: 0;
     padding: 0;
+    position: relative;
+    overflow-y: auto;
+}
+
+body::before {
+    content: "";
+    background: url('../public/IMG_8989.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.4; /* Adjust transparency as desired */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensures background stays behind content */
+}
+
+
+#nav-items{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 40px;
+    gap: 20px;
 }
 
-/* Profile Container */
-#profileContainer {
-    width: 80%;
-    max-width: 600px;
-    background: #fff;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+#welcome{
+    background-color: #1817178c;
+    font-size: 10px;
+    width:250px;
+    border-radius: 50px;
+    color:white;
+    text-align: center;
 }
 
-/* Upload Form */
-h2 {
-    color: #444;
-    margin-bottom: 10px;
+#details{
+    background-color: #1817178c;
+    width:300px;
+    border-radius: 50px;
+    color:white;
+    text-align: center;
+    
 }
 
 form {
-    background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 80%;
     max-width: 500px;
+    margin-top: 20px;
 }
 
-input[type="file"] {
-    display: block;
-    margin: 10px auto;
+/* From Uiverse.io by 3bdel3ziz-T */ 
+.container {
+    --transition: 350ms;
+    --folder-W: 100px;
+    --folder-H: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+    background: linear-gradient(135deg, #6dd5ed, #2193b0);
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    height: calc(var(--folder-H) * 1.7);
+    position: relative;
+  }
+  
+  .folder {
+    position: absolute;
+    top: -20px;
+    left: calc(50% - 60px);
+    animation: float 2.5s infinite ease-in-out;
+    transition: transform var(--transition) ease;
+  }
+  
+  .folder:hover {
+    transform: scale(1.05);
+  }
+  
+  .folder .front-side,
+  .folder .back-side {
+    position: absolute;
+    transition: transform var(--transition);
+    transform-origin: bottom center;
+  }
+  
+  .folder .back-side::before,
+  .folder .back-side::after {
+    content: "";
+    display: block;
+    background-color: white;
+    opacity: 0.5;
+    z-index: 0;
+    width: var(--folder-W);
+    height: var(--folder-H);
+    position: absolute;
+    transform-origin: bottom center;
+    border-radius: 15px;
+    transition: transform 350ms;
+    z-index: 0;
+  }
+  
+  .container:hover .back-side::before {
+    transform: rotateX(-5deg) skewX(5deg);
+  }
+  .container:hover .back-side::after {
+    transform: rotateX(-15deg) skewX(12deg);
+  }
+  
+  .folder .front-side {
+    z-index: 1;
+  }
+  
+  .container:hover .front-side {
+    transform: rotateX(-40deg) skewX(15deg);
+  }
+  
+  .folder .tip {
+    background: linear-gradient(135deg, #ff9a56, #ff6f56);
+    width: 80px;
+    height: 20px;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: -10px;
+    z-index: 2;
+  }
+  
+  .folder .cover {
+    background: linear-gradient(135deg, #ffe563, #ffc663);
+    width: var(--folder-W);
+    height: var(--folder-H);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+  }
+  
+  .custom-file-upload {
+    font-size: 1.1em;
+    color: #ffffff;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background var(--transition) ease;
+    display: inline-block;
+    width: 40%;
+    padding: 10px 35px;
+    position: relative;
+  }
+  
+  .custom-file-upload:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  
+  .custom-file-upload input[type="file"] {
+    display: none;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+  
+    50% {
+      transform: translateY(-20px);
+    }
+  
+    100% {
+      transform: translateY(0px);
+    }
+  }
 
-button {
-    background-color: #007bff;
+#scan-btn{
+    font-size: 1.1em;
+    color: #ffffff;
+    text-align: center;
+    background: linear-gradient(135deg, #6dd5ed44, #2193b0);    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background var(--transition) ease;
+    display: inline-block;
+    width: 40%;
+    padding: 10px 35px;
+    margin-top: 20px;
+}
+  
+
+.findMatchesBtn {
+    background: linear-gradient(135deg, #6dd5ed83, #2193b0);    border: none;
     color: white;
     border: none;
     padding: 10px 15px;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
+    float:right;
+    border-style: none;
+    font-weight: 600;
 }
 
-button:hover {
-    background-color: #0056b3;
+.findMatchesBtn:hover {
+    background-color: #3de98a;
+    border-style: none;
 }
 
 /* Matching Documents Section */
 h3 {
     margin-top: 20px;
-    color: #444;
+    color: #ffffff;
 }
 
 ul#matches {
@@ -71,28 +225,32 @@ ul#matches {
     padding: 0;
     margin: 10px 0;
     width: 80%;
-    max-width: 500px;
+    width: 100%;
+}
+
+.list-items
+{
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.884) ;
+    line-height: 40px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 20px;
+    color:#01011f;
 }
 
 ul#matches li {
-    background: #fff;
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.884) ;
+    line-height: 40px;
+    margin: 15px;
+    paddinG: 10px;
+    padding-left: 20px;
+    border-radius: 20px;
+    color:#01011f;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Credit Request Section */
-#creditRequestSection {
-    margin-top: 20px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 80%;
-    max-width: 400px;
-}
 
 #creditAmount {
     width: 80%;
@@ -116,3 +274,93 @@ ul#matches li {
         width: 90%;
     }
 }
+
+/* Grid Layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Style for each grid item */
+.grid-item {
+    background: #0c0c0c8e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+/* Profile Section */
+.profile {
+    grid-column: span 2; /* Make it wider */
+}
+
+/* Upload Form */
+.upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Matching Documents */
+.matches {
+    grid-column: span 2; 
+    color: white;
+}
+
+/* Credit Request */
+.credits {
+    text-align: center;
+}
+
+/* Scrollable Past Scans */
+#pastScansList {
+    max-height: 200px; /* Set a fixed height */
+    overflow-y: auto; /* Enable scrolling */
+    background-color:#cccccc00;
+    color:white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#pastScansList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#pastScansList::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+#pastScansList::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollable Matching Documents */
+#matches {
+    max-height: 200px; /* Set a fixed height */
+    overflow-y: auto; /* Enable scrolling */
+    background: transparent;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#matches::-webkit-scrollbar {
+    width: 6px;
+}
+
+#matches::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+#matches::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+

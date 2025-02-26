@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get("username");
 
+    const requestCreditsBtn = document.getElementById("requestCreditsBtn");
+    if (requestCreditsBtn) {
+        requestCreditsBtn.addEventListener("click", () => requestCredits(username));
+    }
+
     if (username) {
         await checkUserRole(username);
     }
@@ -90,44 +95,55 @@ async function checkUserRole(username) {
     }
 }
 
-/**
- * Fetch and display user profile details
- */
+
+// Fetch and display user profile
 async function showProfile(username) {
     try {
         const response = await fetch(`http://localhost:3000/user/regularUser?username=${username}`);
         const profile = await response.json();
 
         if (!profile.pastScans) {
-            profile.pastScans = []; 
+            profile.pastScans = [];
         }
 
-        const profileContainer = document.getElementById("profileContainer");
-        if (!profileContainer) return;
+        // Populate user details
+        document.getElementById("welcomeMessage").textContent = `Welcome, ${profile.username}`;
+        document.getElementById("userDetails").textContent = `Remaining Credits: ${profile.role === 'admin' ? 'Unlimited' : profile.credits} | Role: ${profile.role}`;
 
-        profileContainer.innerHTML = `
-            <h1>Welcome, ${profile.username}</h1>
-            <p>Credits: ${profile.role === 'admin' ? 'Unlimited' : profile.credits} | Role: ${profile.role}</p>
-            <h2>Past Scans</h2>
-            <ul id="pastScansList">
-                ${profile.pastScans.length > 0 ? profile.pastScans.map(doc => `
-                    <li>
-                        ${doc.filename} (${doc.upload_date}) 
-                        <button onclick="findMatches(${doc.id}, '${username}')">Find Matches</button>
-                    </li>
-                `).join('') : "<li>No past scans available.</li>"}
-            </ul>
-        `;
+        // Populate past scans
+        const pastScansList = document.getElementById("pastScansList");
+        pastScansList.innerHTML = ""; // Clear previous list
+
+        if (profile.pastScans.length > 0) {
+            profile.pastScans.forEach(doc => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${doc.filename} (${doc.upload_date}) `;
+
+                const button = document.createElement("button");
+                button.textContent = "Find Matches";
+                listItem.classList.add("list-items")
+                button.classList.add("findMatchesBtn"); // Assigning class
+                button.onclick = () => findMatches(doc.id, username);
+
+                listItem.appendChild(button);
+                pastScansList.appendChild(listItem);
+            });
+        } else {
+            const emptyItem = document.createElement("li");
+            emptyItem.textContent = "No past scans available.";
+            pastScansList.appendChild(emptyItem);
+        }
 
         // Show credit request section for regular users
         if (profile.role === 'user') {
             document.getElementById("creditRequestSection").style.display = "block";
-            document.getElementById("requestCreditsBtn").onclick = () => requestCredits(username);
         }
     } catch (error) {
         console.error("Error fetching profile:", error);
     }
 }
+
+
 
 /**
  * Upload document for scanning
@@ -169,18 +185,6 @@ async function uploadDocument(e) {
 }
 
 
-/**
- * Find matches for a scanned document
- */
-// async function findMatches(docId, username) {
-//     try {
-//         const data = await response.json();
-
-//         alert(data.matches.length > 0 ? `Found ${data.matches.length} matches!` : "No matches found.");
-//     } catch (error) {
-//         console.error("Error finding matches:", error);
-//     }
-// }
 
 async function findMatches(docId, username) {
     console.log(`Attempting to fetch matches for docId: ${docId}, username: ${username}`);
@@ -225,29 +229,33 @@ async function findMatches(docId, username) {
 }
 
 
-/**
- * Request credits for the user
- */
-// async function requestCredits(username) {
-//     const creditAmount = document.getElementById("creditAmount").value;
-//     if (!creditAmount || creditAmount <= 0) {
-//         alert("Please enter a valid amount.");
-//         return;
-//     }
 
-//     try {
-//         const response = await fetch("http://localhost:3000/user/requestCredits", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ username, amount: creditAmount }),
-//             credentials: "include"
-//         });
+async function requestCredits(username) {
+    const creditAmount = parseInt(document.getElementById("creditAmount").value);
 
-//         const result = await response.json();
-//         alert(result.message || "Credit request submitted!");
-//     } catch (error) {
-//         console.error("Error requesting credits:", error);
-//     }
-// }
+    if (!creditAmount || creditAmount <= 0) {
+        alert("Please enter a valid credit amount.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:3000/user/regularUser/requestCredits", {
+            method: "POST",  // Ensure it matches backend route type
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, requested_credits: creditAmount }),
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        alert(result.message || "Credit request submitted successfully!");
+    } catch (error) {
+        console.error("Error requesting credits:", error);
+        alert("Failed to request credits. Please try again.");
+    }
+}
 
 

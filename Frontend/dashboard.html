@@ -65,25 +65,24 @@
         </div>
 
         <!-- Page 4: Scans per User Table -->
-        <div id="page4" class="page">
-            <h2>Scans per User</h2>
-            <!-- Search bar -->
-            <input type="text" id="searchUser" placeholder="Search by Uid" onkeyup="filterScansTable()">
-            <table id="user-scans-table">
-                <thead>
-                    <tr>
-                        <th>Uid</th>
-                        <th>Username</th>
-                        <th>Scans Today</th>
-                        <th>Total Scans</th>
-                        <th>Remaining Credits</th>
-                        <th>Credit Requests</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
+        <!-- Page 4: Scans per User Table -->
+<div id="page4" class="page">
+    <h2>Scans per User</h2>
+    <input type="text" id="searchUser" placeholder="Search by Uid" onkeyup="filterScansTable()">
+    <table id="user-scans-table">
+        <thead>
+            <tr>
+                <th>Uid</th>
+                <th>Username</th>
+                <th>Scans Today</th>
+                <th>Total Scans</th>
+                <th>Remaining Credits</th>
+                <th>Pending Credit Requests</th>  <!-- New column for pending requests -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
     <script src="./dashboard.js"></script>
 </body>
