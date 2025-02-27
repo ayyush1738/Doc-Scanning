@@ -26,13 +26,13 @@ exports.getAdminAnalytics = (req, res) => {
             db.all("SELECT users.username, COUNT(documents.id) as total_scans FROM users LEFT JOIN documents ON users.id = documents.user_id GROUP BY users.id ORDER BY total_scans DESC LIMIT 5", [], (err, topUsers) => {
                 if (err) return res.status(500).json({ message: "Database error" });
 
-                db.all("SELECT users.id, users.username, IFNULL(daily.scans_today, 0) as scans_today, COUNT(documents.id) as total_scans, users.credits, IFNULL(pending_requests.pending_count, 0) AS pending_requests FROM users LEFT JOIN (SELECT user_id, COUNT(id) as scans_today FROM documents WHERE date(upload_date, 'localtime') = date('now', 'localtime') GROUP BY user_id) daily ON users.id = daily.user_id LEFT JOIN documents ON users.id = documents.user_id LEFT JOIN (SELECT user_id, COUNT(id) AS pending_count FROM credit_requests WHERE status = 'pending' GROUP BY user_id) pending_requests ON users.id = pending_requests.user_id GROUP BY users.id", [], (err, userScans) => {
+                db.all("SELECT users.id, users.username, IFNULL(daily.scans_today, 0) AS scans_today, COUNT(documents.id) AS total_scans, users.credits, IFNULL(pending_requests.total_requested_credits, 0) AS pending_requests FROM users LEFT JOIN (SELECT user_id, COUNT(id) AS scans_today FROM documents WHERE date(upload_date, 'localtime') = date('now', 'localtime') GROUP BY user_id) daily ON users.id = daily.user_id LEFT JOIN documents ON users.id = documents.user_id LEFT JOIN (SELECT user_id, SUM(requested_credits) AS total_requested_credits FROM credit_requests WHERE status = 'pending' GROUP BY user_id) pending_requests ON users.id = pending_requests.user_id GROUP BY users.id;", [], (err, userScans) => {
                     if (err) return res.status(500).json({ message: "Database error" });
 
-                    db.all("SELECT id, username, (20 - credits) AS credits_used FROM users", [], (err, creditsUsed) => {
+                    db.all("SELECT users.id, users.username, IFNULL(daily.scans_today, 0) AS credits_used FROM users LEFT JOIN (SELECT user_id, COUNT(id) AS scans_today FROM documents WHERE date(upload_date, 'localtime') = date('now', 'localtime') GROUP BY user_id) daily ON users.id = daily.user_id;", [], (err, creditsUsed) => {
                         if (err) return res.status(500).json({ message: "Database error" });
 
-                        db.all("SELECT id, username, (20 - credits) AS top_credits FROM users ORDER BY top_credits DESC LIMIT 5", [], (err, topCredits) => {
+                        db.all("SELECT users.id, users.username, IFNULL(daily.scans_today, 0) AS top_credits FROM users LEFT JOIN (SELECT user_id, COUNT(id) AS scans_today FROM documents WHERE date(upload_date, 'localtime') = date('now', 'localtime') GROUP BY user_id) daily ON users.id = daily.user_id ORDER BY top_credits DESC LIMIT 5", [], (err, topCredits) => {
                             if (err) return res.status(500).json({ message: "Database error" });
 
                             res.json({
@@ -53,31 +53,70 @@ exports.getAdminAnalytics = (req, res) => {
 
 
 
+
+// Fetch all pending credit requests for admin panel
 exports.getCreditRequests = (req, res) => {
-    db.all("SELECT id, username, requested_credits FROM credit_requests WHERE status = 'pending'", [], (err, requests) => {
-        if (err) return res.status(500).json({ message: "Database error" });
-        res.json({ requests });
-    });
+    db.all(`
+        SELECT cr.id, u.username, cr.requested_credits 
+        FROM credit_requests cr
+        JOIN users u ON cr.user_id = u.id
+        WHERE cr.status = 'pending'`, 
+        [], 
+        (err, requests) => {
+            if (err) {
+                console.error("Database error:", err.message);
+                return res.status(500).json({ message: "Database error" });
+            }
+            res.json({ requests });
+        }
+    );
 };
 
+// Approve Credit Request (Add credits to user and remove from pending)
 exports.approveCreditRequest = (req, res) => {
     const { requestId } = req.body;
+
     db.get("SELECT user_id, requested_credits FROM credit_requests WHERE id = ?", [requestId], (err, request) => {
-        if (err || !request) return res.status(400).json({ message: "Invalid request" });
-        db.run("UPDATE users SET credits = credits + ? WHERE id = ?", [request.requested_credits, request.user_id], err => {
-            if (err) return res.status(500).json({ message: "Error updating credits" });
-            db.run("UPDATE credit_requests SET status = 'approved' WHERE id = ?", [requestId]);
-            res.json({ message: "Credit approved" });
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).json({ message: "Database error" });
+        }
+
+        if (!request) {
+            return res.status(400).json({ message: "Invalid or already processed request" });
+        }
+
+        const { user_id, requested_credits } = request;
+
+        // Update user's credits
+        db.run("UPDATE users SET credits = credits + ? WHERE id = ?", [requested_credits, user_id], (err) => {
+            if (err) {
+                console.error("Error updating user credits:", err.message);
+                return res.status(500).json({ message: "Error updating user credits" });
+            }
+
+            // Remove the request from pending
+            db.run("DELETE FROM credit_requests WHERE id = ?", [requestId], (err) => {
+                if (err) {
+                    console.error("Error deleting credit request:", err.message);
+                    return res.status(500).json({ message: "Error deleting credit request" });
+                }
+
+                res.json({ message: `Approved! ${requested_credits} credits added to user.` });
+            });
         });
     });
 };
 
+// Deny Credit Request (Simply remove from pending requests)
 exports.denyCreditRequest = (req, res) => {
     const { requestId } = req.body;
-    db.run("UPDATE credit_requests SET status = 'denied' WHERE id = ?", [requestId], err => {
-        if (err) return res.status(500).json({ message: "Error denying request" });
-        res.json({ message: "Credit request denied" });
+
+    db.run("UPDATE credit_requests SET requested_credits = 0 WHERE id = ?", [requestId], (err) => {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).json({ message: "Database error" });
+        }
+        res.json({ message: "Request denied successfully." });
     });
 };
-
-

@@ -173,7 +173,16 @@ async function uploadDocument(e) {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || "File upload failed!");
+            if (response.status === 400) {
+                alert("No file uploaded!");
+            } else if (response.status === 403) {
+                alert("Not enough credits! Request more credits.");
+            } else if (response.status === 500) {
+                alert(data.message || "Server error occurred. Please try again later.");
+            } else {
+                alert("File upload failed!");
+            }
+            return;
         }
 
         alert("File uploaded successfully!");
@@ -181,8 +190,10 @@ async function uploadDocument(e) {
 
     } catch (error) {
         console.error("Error uploading document:", error);
+        alert("An unexpected error occurred. Please try again.");
     }
 }
+
 
 
 
@@ -237,7 +248,6 @@ async function requestCredits(username) {
         alert("Please enter a valid credit amount.");
         return;
     }
-
     try {
         const response = await fetch("http://localhost:3000/user/regularUser/requestCredits", {
             method: "POST",  // Ensure it matches backend route type
@@ -254,7 +264,7 @@ async function requestCredits(username) {
         alert(result.message || "Credit request submitted successfully!");
     } catch (error) {
         console.error("Error requesting credits:", error);
-        alert("Failed to request credits. Please try again.");
+        alert("Credit request denied. You can only request credits when your credits are exhausted");
     }
 }
 

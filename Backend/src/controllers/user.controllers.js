@@ -173,15 +173,31 @@ exports.getUserPage = (req, res) => {
 
 exports.getCredits = (req, res) => {
     const { username, requested_credits } = req.body;
-    db.get(`SELECT id, role FROM users WHERE username = ?`, [username], (err, user) => {
-        if(err || !user) return  res.status(404).send('User not found');
-        if(user.role === 'admin') return res.status(403).send("Admins have unlimited credits");
-        db.run(`INSERT INTO credit_requests (user_id, requested_credits) VALUES (?, ?)`, [user.id, requested_credits], (err) => {
-            if(err) return res.status(500).send("Request Failed");
-            res.json({
-                message: "Request Submitted Successfully",
-                requested_credits
-            });
-        })
-    })
-}
+
+    if (requested_credits <= 0 || requested_credits > 20) {
+        return res.status(400).json({ message: "Invalid credit request. You can only request between 1 to 20 credits." });
+    }
+
+    db.get(`SELECT id, role, credits FROM users WHERE username = ?`, [username], (err, user) => {
+        if (err || !user) return res.status(404).json({ message: "User not found" });
+
+        if (user.role === 'admin') return res.status(403).json({ message: "Admins have unlimited credits" });
+
+        if (user.credits > 0) {
+            return res.status(403).json({ message: "Credit request denied. You can only request credits when your balance is 0." });
+        }
+
+        db.run(
+            `INSERT INTO credit_requests (user_id, requested_credits) VALUES (?, ?)`,
+            [user.id, requested_credits],
+            (err) => {
+                if (err) return res.status(500).json({ message: "Request Failed" });
+
+                res.json({
+                    message: "Request Submitted Successfully",
+                    requested_credits
+                });
+            }
+        );
+    });
+};

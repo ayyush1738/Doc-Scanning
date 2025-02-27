@@ -2,15 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch("/admin/analytics");
     const data = await response.json();
 
-    // Update Page 1: Total Scans Today
     document.getElementById("total-scans").innerText = data.total_scans_today;
     document.getElementById("top-topics").innerHTML = data.top_topics
         .map((topic, index) => {
-            if (index < 3) {
-                return `<span class="highlight-topic">${topic}</span>`; // Highlight top 3
-            } else {
-                return `<span>${topic}</span>`; // Normal text for the rest
-            }
+            return `<span class="${index < 3 ? "highlight-topic" : ""}">${topic}</span>`;
         })
         .join("<br><br>");
 
@@ -18,19 +13,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     createBarChart(data.top_credits);
 
     // Populate Scans per User Table
-    const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
-    tableBody.innerHTML = "";
-    data.user_scans.forEach(user => {
-        let row = `<tr>
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td>${user.scans_today}</td>
-            <td>${user.total_scans}</td>
-            <td>${user.credits}</td>
-            <td>${user.pending_requests}</td>  <!-- Display pending credit requests -->
-        </tr>`;
-        tableBody.innerHTML += row;
-    });
+const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
+tableBody.innerHTML = "";
+
+data.user_scans.forEach(user => {
+    let actionButtons = "";
+    if (user.pending_requests > 0) {
+        actionButtons = `
+            <button class="approve-btn" onclick="approveCredit(${user.id})">Approve</button>
+            <button class="deny-btn" onclick="denyCredit(${user.id})">Deny</button>
+        `;
+    }
+
+    let row = `<tr>
+        <td>${user.id}</td>
+        <td>${user.username}</td>
+        <td>${user.scans_today}</td>
+        <td>${user.total_scans}</td>
+        <td>${user.credits}</td>
+        <td>${user.pending_requests}</td>
+        <td>${actionButtons}</td> 
+    </tr>`;
+    
+    tableBody.innerHTML += row;
+});
+
 
     // Populate Credit Usage Table
     const tableBody2 = document.getElementById("credit-scans-table").querySelector("tbody");
@@ -47,6 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Default page load
     showPage(1);
 });
+
 
 
 // Function to switch between pages
@@ -155,6 +163,39 @@ function filterCreditsTable() {
 }
 
 
+// Function to Approve Credit Request
+function approveCredit(userId) {
+    fetch("/admin/approve-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId: userId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        location.reload(); // Refresh table to reflect changes
+    })
+    .catch(error => console.error("Error approving credit:", error));
+}
+
+// Function to Deny Credit Request
+function denyCredit(userId) {
+    fetch("/admin/deny-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId: userId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        location.reload(); // Refresh table to reflect changes
+    })
+    .catch(error => console.error("Error denying credit:", error));
+}
 
 
 
