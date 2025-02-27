@@ -99,7 +99,7 @@ async function checkUserRole(username) {
 // Fetch and display user profile
 async function showProfile(username) {
     try {
-        const response = await fetch(`http://localhost:3000/user/regularUser?username=${username}`);
+        const response = await fetch(`http://localhost:3000/user/profile?username=${username}`);
         const profile = await response.json();
 
         if (!profile.pastScans) {
@@ -205,14 +205,14 @@ async function findMatches(docId, username) {
             credentials: 'include' // Ensure cookies are sent for authentication
         });
 
-        console.log("Response received:", response); // ✅ Log response
+        console.log("Response received:", response);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("Match Data:", data); // ✅ Log the returned matches
+        console.log("Match Data:", data);
 
         if (!data || !Array.isArray(data.matches)) {
             alert("No matches found.");
@@ -221,15 +221,20 @@ async function findMatches(docId, username) {
 
         // Display matches in the UI
         const matchesList = document.getElementById("matches");
-        if (matchesList) {
-            matchesList.innerHTML = data.matches.length > 0
-                ? data.matches.map(match => `
-                    <li>
-                        <strong>${match.filename}</strong> 
-                        (Similarity: ${(match.similarity * 100).toFixed(1)}%)
-                    </li>
-                `).join('')
-                : "<li>No matching documents found.</li>";
+        matchesList.innerHTML = ""; // Clear previous content
+
+        if (data.matches.length > 0) {
+            data.matches.forEach(match => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    <strong>${match.filename}</strong> 
+                    (Similarity: ${(match.similarity * 100).toFixed(1)}%)
+                    <button class="view-file-btn" onclick="openFile('${match.id}')">📄 View File</button>
+                `;
+                matchesList.appendChild(listItem);
+            });
+        } else {
+            matchesList.innerHTML = "<li>No matching documents found.</li>";
         }
 
         alert(`Found ${data.matches.length} matches!`);
@@ -238,6 +243,12 @@ async function findMatches(docId, username) {
         alert("Error finding matches. Please try again.");
     }
 }
+
+// Function to Open File in a New Tab
+function openFile(docId) {
+    window.open(`http://localhost:3000/user/regularUser/open-file/${docId}`, "_blank");
+}
+
 
 
 

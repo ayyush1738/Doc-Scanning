@@ -39,19 +39,14 @@ db.serialize(() => {
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
     `);
+    db.run(`CREATE TABLE IF NOT EXISTS activity_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL,
+        action TEXT NOT NULL,
+        details TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
 
-    // Corrected SQLite Trigger (Using BEFORE INSERT with CASE)
-    db.run(`
-        CREATE TRIGGER IF NOT EXISTS set_credits_on_insert
-        BEFORE INSERT ON users
-        FOR EACH ROW
-        BEGIN
-            SELECT CASE 
-                WHEN NEW.role = 'admin' THEN NEW.credits = 1000
-                ELSE NEW.credits = 20
-            END;
-        END;
-    `);
 });
 
 module.exports = db;

@@ -17,6 +17,7 @@
         <a href="#" onclick="showPage(3)">Credit Usage Stats</a>
         <a href="#" onclick="showPage(4)">Scans per User</a>
         <a href="#" onclick="showPage(5)">Approved/Pending</a>
+        <a href="#" onclick="showPage(6)">Activity logs</a>
         <div class="logout-section">
             <button onclick="logout()" class="logout-btn">
                 <img src="./public/logout3.png" alt="">
@@ -50,7 +51,7 @@
 
         <!-- Page 3: Credit Usage Stats -->
         <div id="page3" class="page">
-            <h2>Credit Usage Stats</h2>
+            <h2>Daily Credit Usage Stats</h2>
             <canvas id="creditChart"></canvas>
             <input type="text" id="searchCreditsUser" placeholder="Search by Uid" onkeyup="filterCreditsTable()">
             <table id="credit-scans-table">
@@ -68,6 +69,7 @@
         <!-- Page 4: Scans per User Table -->
         <!-- Page 4: Scans per User Table -->
 <!-- Page 4: Scans per User Table -->
+<!-- Page 4: Scans per User Table -->
 <div id="page4" class="page">
     <h2>Scans per User</h2>
     <input type="text" id="searchUser" placeholder="Search by Uid" onkeyup="filterScansTable()">
@@ -79,12 +81,13 @@
                 <th>Scans Today</th>
                 <th>Total Scans</th>
                 <th>Remaining Credits</th>
-                <th>Pending Credit Requests</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
 </div>
+
 
 <!-- Pending Credit Requests Table -->
 <div id="page5" class="page">
@@ -113,6 +116,25 @@
         <tbody></tbody>
     </table>
 </div>
+
+
+<!-- Page 7: User Activity Logs -->
+<div id="page6" class="page">
+    <h2>User Activity Logs</h2>
+    <input type="text" id="searchActivity" placeholder="Search by Username" onkeyup="filterActivityTable()">
+    <table id="activity-logs-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Username</th>
+                <th>Action</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
 
 
 

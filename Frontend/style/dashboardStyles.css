@@ -22,6 +22,7 @@ body::before {
     z-index: -1; /* Ensures background stays behind content */
 }
 
+
 .sidebar {
     height: 80%;
     width: 200px;
@@ -36,6 +37,8 @@ body::before {
     margin-bottom: 50px;
     padding-inline: 20px;
     text-align: center;
+    background: url('../public/IMG_8997.jpeg') no-repeat center center fixed;
+    background-size: cover;
 }
 
 .sidebar a {
@@ -56,7 +59,8 @@ body::before {
 }
 
 .sidebar a.active {
-    background-color: #505357;
+    background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
+    background-size: cover;    
     color:white;
 }
 
@@ -70,6 +74,8 @@ body::before {
     border-style: none;
     background-color: #ffffff;
     margin-top: 200px;
+    background: url('../public/IMG_8997.jpeg') no-repeat center center fixed;
+    background-size: cover;
 }
 
 .logout-btn img{
@@ -96,11 +102,13 @@ body::before {
     background: #505357;
     color: white;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 20px;
     text-align: center;
     height: 500px;
     justify-content: center;
     align-items: center;
+    background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
+    background-size: cover;
 }
 
 #top-topics{
@@ -151,7 +159,8 @@ th {
     max-height: 300px;  /* Set a max height for scrolling */
     overflow-y: auto;   /* Enable vertical scrolling */
     padding: 10px;
-    background:#505357;
+    background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
+    background-size: cover;
     border-radius: 5px;
 }
 

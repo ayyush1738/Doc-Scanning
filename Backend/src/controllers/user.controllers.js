@@ -106,7 +106,6 @@ exports.uploadDocument = (req, res) => {
             return res.status(400).json({ message: "No file uploaded!" });
         }
 
-        // Read the content of the uploaded file
         const filePath = req.file.path;
         fs.readFile(filePath, 'utf8', (err, content) => {
             if (err) {
@@ -115,27 +114,32 @@ exports.uploadDocument = (req, res) => {
 
             const upload_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-            // Insert document with content
             db.run(
                 "INSERT INTO documents (user_id, filename, content, upload_date) VALUES (?, ?, ?, ?)",
                 [req.user.id, filename, content, upload_date],
                 function (err) {
                     if (err) return res.status(500).json({ message: "Error saving file" });
 
-                    // Deduct 1 credit after scanning
                     db.run("UPDATE users SET credits = credits - 1 WHERE id = ?", [req.user.id], (err) => {
                         if (err) return res.status(500).json({ message: "Error updating credits" });
 
-                        res.json({
-                            message: "File uploaded successfully!",
-                            document: { filename, upload_date }
-                        });
+                        // ✅ Log Activity in DB
+                        db.run(
+                            "INSERT INTO activity_logs (username, action, details) VALUES (?, ?, ?)",
+                            [req.user.username, "Document Scan", `Scanned file: ${filename}`],
+                            (err) => {
+                                if (err) console.error("Error inserting activity log:", err.message);
+                            }
+                        );
+
+                        res.json({ message: "File uploaded successfully!", document: { filename, upload_date } });
                     });
                 }
             );
         });
     });
 };
+
 
 
 
@@ -193,11 +197,45 @@ exports.getCredits = (req, res) => {
             (err) => {
                 if (err) return res.status(500).json({ message: "Request Failed" });
 
-                res.json({
-                    message: "Request Submitted Successfully",
-                    requested_credits
-                });
+                // ✅ Log Activity in DB
+                db.run(
+                    "INSERT INTO activity_logs (username, action, details) VALUES (?, ?, ?)",
+                    [username, "Credit Request", `Requested ${requested_credits} credits`],
+                    (err) => {
+                        if (err) console.error("Error inserting activity log:", err.message);
+                    }
+                );
+
+                res.json({ message: "Request Submitted Successfully", requested_credits });
             }
         );
     });
 };
+
+
+exports.openFile = (req, res) => {
+    const docId = req.params.docId;
+
+    db.get("SELECT filename FROM documents WHERE id = ?", [docId], (err, doc) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ message: "Database error" });
+        }
+
+        if (!doc) {
+            return res.status(404).json({ message: "File not found." });
+        }
+
+        const filePath = path.join(__dirname, "../../uploads", doc.filename); // Adjust based on file storage location
+
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                console.error("Error sending file:", err);
+                res.status(500).json({ message: "Error serving file." });
+            }
+        });
+    });
+};
+
+
+

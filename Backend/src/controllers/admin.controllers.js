@@ -128,3 +128,64 @@ exports.denyCreditRequest = (req, res) => {
         res.json({ message: "Credit request denied successfully." });
     });
 };
+
+// Update User Credits Manually (Admin Control)
+// Update User Credits Manually (Admin Control)
+exports.updateUserCredits = (req, res) => {
+    const { userId, amount } = req.body;
+
+    if (typeof amount !== "number" || amount === 0) {
+        return res.status(400).json({ message: "Invalid credit adjustment amount." });
+    }
+
+    db.get("SELECT credits FROM users WHERE id = ?", [userId], (err, user) => {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).json({ message: "Database error" });
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        let newCredits = user.credits + amount;
+
+        // Prevent credits from exceeding 20
+        if (newCredits > 20) {
+            return res.status(400).json({ message: "Cannot increase credits beyond 20." });
+        }
+
+        // Prevent negative credits
+        if (newCredits < 0) {
+            return res.status(400).json({ message: "Credits cannot be negative." });
+        }
+
+        // Update user's credits in the database
+        db.run("UPDATE users SET credits = ? WHERE id = ?", [newCredits, userId], (err) => {
+            if (err) {
+                console.error("Error updating credits:", err.message);
+                return res.status(500).json({ message: "Error updating user credits." });
+            }
+
+            res.json({ success: true, message: `User credits updated to ${newCredits}.` });
+        });
+    });
+};
+
+
+exports.getActivityLogs = (req, res) => {
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ message: "Access Denied!" });
+    }
+
+    db.all("SELECT * FROM activity_logs ORDER BY timestamp DESC", [], (err, logs) => {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).json({ message: "Database error" });
+        }
+
+        console.log("Fetched Activity Logs:", logs);  // ✅ Debugging Log
+        res.json({ logs });
+    });
+};
+
