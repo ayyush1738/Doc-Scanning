@@ -72,6 +72,7 @@ exports.getCreditRequests = (req, res) => {
     );
 };
 
+
 // Approve Credit Request (Add credits to user and remove from pending)
 exports.approveCreditRequest = (req, res) => {
     const { requestId } = req.body;
@@ -88,21 +89,28 @@ exports.approveCreditRequest = (req, res) => {
 
         const { user_id, requested_credits } = request;
 
-        // Update user's credits
-        db.run("UPDATE users SET credits = credits + ? WHERE id = ?", [requested_credits, user_id], (err) => {
-            if (err) {
-                console.error("Error updating user credits:", err.message);
-                return res.status(500).json({ message: "Error updating user credits" });
-            }
+        db.serialize(() => {
+            db.run("BEGIN TRANSACTION");
 
-            // Remove the request from pending
-            db.run("DELETE FROM credit_requests WHERE id = ?", [requestId], (err) => {
+            // Update user's credits
+            db.run("UPDATE users SET credits = credits + ? WHERE id = ?", [requested_credits, user_id], (err) => {
                 if (err) {
-                    console.error("Error deleting credit request:", err.message);
-                    return res.status(500).json({ message: "Error deleting credit request" });
+                    console.error("Error updating user credits:", err.message);
+                    db.run("ROLLBACK");
+                    return res.status(500).json({ message: "Error updating user credits" });
                 }
 
-                res.json({ message: `Approved! ${requested_credits} credits added to user.` });
+                // Remove the request from pending
+                db.run("DELETE FROM credit_requests WHERE id = ?", [requestId], (err) => {
+                    if (err) {
+                        console.error("Error deleting credit request:", err.message);
+                        db.run("ROLLBACK");
+                        return res.status(500).json({ message: "Error deleting credit request" });
+                    }
+
+                    db.run("COMMIT");
+                    res.json({ message: `Approved! ${requested_credits} credits added to user.` });
+                });
             });
         });
     });
@@ -112,11 +120,11 @@ exports.approveCreditRequest = (req, res) => {
 exports.denyCreditRequest = (req, res) => {
     const { requestId } = req.body;
 
-    db.run("UPDATE credit_requests SET requested_credits = 0 WHERE id = ?", [requestId], (err) => {
+    db.run("DELETE FROM credit_requests WHERE id = ?", [requestId], (err) => {
         if (err) {
             console.error("Database error:", err.message);
             return res.status(500).json({ message: "Database error" });
         }
-        res.json({ message: "Request denied successfully." });
+        res.json({ message: "Credit request denied successfully." });
     });
 };

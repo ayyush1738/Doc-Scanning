@@ -17,13 +17,6 @@ const tableBody = document.getElementById("user-scans-table").querySelector("tbo
 tableBody.innerHTML = "";
 
 data.user_scans.forEach(user => {
-    let actionButtons = "";
-    if (user.pending_requests > 0) {
-        actionButtons = `
-            <button class="approve-btn" onclick="approveCredit(${user.id})">Approve</button>
-            <button class="deny-btn" onclick="denyCredit(${user.id})">Deny</button>
-        `;
-    }
 
     let row = `<tr>
         <td>${user.id}</td>
@@ -32,7 +25,6 @@ data.user_scans.forEach(user => {
         <td>${user.total_scans}</td>
         <td>${user.credits}</td>
         <td>${user.pending_requests}</td>
-        <td>${actionButtons}</td> 
     </tr>`;
     
     tableBody.innerHTML += row;
@@ -164,38 +156,119 @@ function filterCreditsTable() {
 
 
 // Function to Approve Credit Request
-function approveCredit(userId) {
+// Function to Approve Credit Request
+function approveCredit(requestId) {
     fetch("/admin/approve-credit", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ requestId: userId })
+        body: JSON.stringify({ requestId })
     })
     .then(response => response.json())
     .then(data => {
         alert(data.message);
-        location.reload(); // Refresh table to reflect changes
+        fetchCreditRequests();  // Refresh the table
     })
     .catch(error => console.error("Error approving credit:", error));
 }
 
 // Function to Deny Credit Request
-function denyCredit(userId) {
+function denyCredit(requestId) {
     fetch("/admin/deny-credit", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ requestId: userId })
+        body: JSON.stringify({ requestId })
     })
     .then(response => response.json())
     .then(data => {
         alert(data.message);
-        location.reload(); // Refresh table to reflect changes
+        fetchCreditRequests();  // Refresh the table
     })
     .catch(error => console.error("Error denying credit:", error));
 }
+
+// Function to Fetch and Display Credit Requests
+// Fetch and Display Pending Requests
+function fetchCreditRequests() {
+    fetch("/admin/credit-requests")
+        .then(response => response.json())
+        .then(data => {
+            const pendingTableBody = document.getElementById("pending-credit-requests").querySelector("tbody");
+            pendingTableBody.innerHTML = ""; // Clear existing rows
+
+            data.requests.forEach(request => {
+                let row = `<tr>
+                    <td>${request.id}</td>
+                    <td>${request.username}</td>
+                    <td>${request.requested_credits}</td>
+                    <td>
+                        <button class="approve-btn" onclick="approveCredit(${request.id}, '${request.username}', ${request.requested_credits})">Approve</button>
+                        <button class="deny-btn" onclick="denyCredit(${request.id}, '${request.username}', ${request.requested_credits})">Deny</button>
+                    </td>
+                </tr>`;
+
+                pendingTableBody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error("Error fetching credit requests:", error));
+}
+
+// Approve Credit Request and Move to Processed Table
+function approveCredit(requestId, username, credits) {
+    fetch("/admin/approve-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        moveToProcessedTable(requestId, username, credits, "Approved");
+        fetchCreditRequests();  // Refresh the pending requests
+    })
+    .catch(error => console.error("Error approving credit:", error));
+}
+
+// Deny Credit Request and Move to Processed Table
+function denyCredit(requestId, username, credits) {
+    fetch("/admin/deny-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        moveToProcessedTable(requestId, username, credits, "Denied");
+        fetchCreditRequests();  // Refresh the pending requests
+    })
+    .catch(error => console.error("Error denying credit:", error));
+}
+
+// Move Requests to Processed Table
+function moveToProcessedTable(requestId, username, credits, status) {
+    const processedTableBody = document.getElementById("processed-credit-requests").querySelector("tbody");
+
+    let row = `<tr>
+        <td>${requestId}</td>
+        <td>${username}</td>
+        <td>${credits}</td>
+        <td>${status}</td>
+    </tr>`;
+
+    processedTableBody.innerHTML += row;
+}
+
+
+// Call function to load credit requests on page load
+document.addEventListener("DOMContentLoaded", fetchCreditRequests);
 
 
 
@@ -209,5 +282,4 @@ function logout() {
         window.location.href = "index.html";  // Redirect to login page
     }).catch(error => console.error("Logout error:", error));
 }
-
 

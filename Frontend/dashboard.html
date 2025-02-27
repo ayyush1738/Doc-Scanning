@@ -16,6 +16,7 @@
         <a href="#" onclick="showPage(2)">Top Users by Scans</a>
         <a href="#" onclick="showPage(3)">Credit Usage Stats</a>
         <a href="#" onclick="showPage(4)">Scans per User</a>
+        <a href="#" onclick="showPage(5)">Approved/Pending</a>
         <div class="logout-section">
             <button onclick="logout()" class="logout-btn">
                 <img src="./public/logout3.png" alt="">
@@ -79,12 +80,41 @@
                 <th>Total Scans</th>
                 <th>Remaining Credits</th>
                 <th>Pending Credit Requests</th>
-                <th>Action</th> <!-- New column for buttons -->
             </tr>
         </thead>
         <tbody></tbody>
     </table>
 </div>
+
+<!-- Pending Credit Requests Table -->
+<div id="page5" class="page">
+    <h2>Pending Credit Requests</h2>
+    <table id="pending-credit-requests">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Username</th>
+                <th>Requested Credits</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <table id="processed-credit-requests">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Username</th>
+                <th>Requested Credits</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
 
 
     <script src="./dashboard.js"></script>

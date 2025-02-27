@@ -268,4 +268,11 @@ async function requestCredits(username) {
     }
 }
 
-
+function logout() {
+    fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include"
+    }).then(() => {
+        window.location.href = "index.html";  // Redirect to login page
+    }).catch(error => console.error("Logout error:", error));
+}

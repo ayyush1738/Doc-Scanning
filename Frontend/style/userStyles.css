@@ -34,6 +34,7 @@ body::before {
     border-radius: 50px;
     color:white;
     text-align: center;
+    line-height: 60px;
 }
 
 #details{
@@ -42,7 +43,7 @@ body::before {
     border-radius: 50px;
     color:white;
     text-align: center;
-    
+    line-height: 60px;
 }
 
 form {
@@ -287,10 +288,10 @@ ul#matches li {
 
 /* Style for each grid item */
 .grid-item {
-    background: #0c0c0c8e;
+    /* background: #0c0c0c8e; */
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
     color: white;
 }
 
@@ -364,3 +365,42 @@ ul#matches li {
     background: rgba(255, 255, 255, 0.1);
 }
 
+/* Logout button styling */
+.logout-section {
+  padding: 20px;
+  text-align: center;
+  float: right;
+}
+
+.logout-btn{
+  border-style: none;
+  background: rgba(255, 255, 255, 0.452);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.logout-btn img{
+  height: 200px;
+  cursor: pointer;
+  height: 30px;
+}
+
+
+#requestCreditsBtn{
+  margin-top: 60px;
+  background: linear-gradient(135deg, #3ef38a83, #17a9ce);    border: none;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    float:right;
+    border-style: none;
+    font-weight: 600;
+}
+
+#creditAmount{
+  margin-top: 50px;
+}
