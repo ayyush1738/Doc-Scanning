@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const response = await fetch("/admin/analytics");
+    const response = await fetch("http://localhost:3000/admin/analytics");
     const data = await response.json();
     let count = 0;
 

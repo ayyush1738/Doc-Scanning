@@ -35,12 +35,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../Frontend")));
 app.use((req, res, next) => {
-    const allowedOrigins = ["http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000"];
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        res.header("Access-Control-Allow-Origin", origin);
-    }
-    res.header("Access-Control-Allow-Credentials", "true"); 
+    res.header("Access-Control-Allow-Origin", req.headers.origin || "*"); // Allow any origin dynamically
+    res.header("Access-Control-Allow-Credentials", "true");  // ✅ Allow cookies to be sent
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
@@ -50,13 +46,14 @@ app.use((req, res, next) => {
     next();
 });
 
+
 setInterval(() => {
     const now = new Date();
     if(now.getHours() === 0 && now.getMinutes() === 0) resetCredits();
     
 }, 60 * 1000 )
 
-// Routes
+// 
 app.use("/healthcheck", healthcheckRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes)

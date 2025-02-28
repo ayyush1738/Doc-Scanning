@@ -3,6 +3,29 @@ const db = require("../db/database.js")
 const bodyParser = require('body-parser')
 const fs = require("fs");
 
+
+exports.getUserPage = (req, res) => {
+    if (!req.user) {
+        return res.status(403).json({ message: "Unauthorized: No user found in request." });
+    }
+    if (req.user.role !== "user") {
+        return res.status(403).json({ message: "Access Denied! Only regular users can access this page." });
+    }
+    const username = req.query.username;
+    db.get("SELECT id, username, role, credits FROM users WHERE username = ?", [username], (err, user) => {
+        if (err || !user) {
+            return res.status(404).json({ message: "User not found in database." });
+        }
+        db.all("SELECT id, filename, upload_date FROM documents WHERE user_id = ?", [user.id], (err, docs) => {
+            if (err) {
+                return res.status(500).json({ message: "Database error fetching documents." });
+            }
+            res.json({ success: true, user, pastScans: docs });
+        });
+    });
+};
+
+
 // Levenshtein Distance Function (Basic Text Similarity)
 function levenshteinDistance(s1, s2) {
     if (!s1 || !s2) return 0;
@@ -215,24 +238,12 @@ exports.getCredits = (req, res) => {
 
 exports.openFile = (req, res) => {
     const docId = req.params.docId;
-
     db.get("SELECT filename FROM documents WHERE id = ?", [docId], (err, doc) => {
-        if (err) {
-            console.error("Database error:", err);
-            return res.status(500).json({ message: "Database error" });
-        }
-
-        if (!doc) {
-            return res.status(404).json({ message: "File not found." });
-        }
-
-        const filePath = path.join(__dirname, "../../uploads", doc.filename); // Adjust based on file storage location
-
+        if (err) return res.status(500).json({ message: "Database error" });
+        if (!doc) return res.status(404).json({ message: "File not found." });
+        const filePath = path.join(__dirname, "../../uploads", doc.filename);
         res.sendFile(filePath, (err) => {
-            if (err) {
-                console.error("Error sending file:", err);
-                res.status(500).json({ message: "Error serving file." });
-            }
+            if (err) res.status(500).json({ message: "Error serving file." });
         });
     });
 };

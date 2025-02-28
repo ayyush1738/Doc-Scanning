@@ -1,12 +1,15 @@
 // Backend - admin.controllers.js
-const path = require("path");
 const db = require("../db/database.js");
 
 exports.getDashboard = (req, res) => {
     if (req.user.role !== "admin") {
-        return res.status(403).send("Access Denied! Only admins can access this page.");
+        return res.status(403).json({ success: false, message: "Access Denied! Only admins can access this page." });
     }
-    res.sendFile(path.join(__dirname, "../../Frontend", "dashboard.html"));
+    
+    res.json({
+        success: true,
+        message: "Admin Dashboard Access Granted",
+    });
 };
 
 

@@ -73,17 +73,19 @@ async function checkUserRole(username) {
     try {
         const response = await fetch("http://localhost:3000/auth/checkRole", {
             method: "GET",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
+            credentials: "include",  // ✅ Ensures cookies are sent
+            headers: { "Content-Type": "application/json" }
         });
 
-        if (response.status === 401) {
-            alert("Session expired! Please log in again.");
-            window.location.href = "index.html";
+        const data = await response.json();
+        
+        if (!response.ok) { // ✅ Properly handle 401 and 403 responses
+            console.error("❌ Authentication Failed:", data);
+            alert(data.message);
+            window.location.href = "index.html"; // Redirect if unauthorized
             return;
         }
 
-        const data = await response.json();
         if (data.role !== "user") {
             alert("Unauthorized Access! Redirecting...");
             window.location.href = "index.html";
@@ -91,9 +93,10 @@ async function checkUserRole(username) {
             await showProfile(username);
         }
     } catch (error) {
-        console.error("Error checking user role:", error);
+        console.error("❌ Error checking user role:", error);
     }
 }
+
 
 
 // Fetch and display user profile
