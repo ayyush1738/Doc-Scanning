@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const natural = require("natural");
 
-// Function to calculate cosine similarity between two TF-IDF vectors
 function cosineSimilarity(tfidf, indexA, indexB) {
     const termsA = tfidf.listTerms(indexA);
     const termsB = tfidf.listTerms(indexB);
@@ -14,19 +13,16 @@ function cosineSimilarity(tfidf, indexA, indexB) {
     let magB = 0;
     const termsBMap = {};
 
-    // Build a map for doc B term weights
     termsB.forEach((t) => {
         termsBMap[t.term] = t.tfidf;
     });
 
-    // Compute dot product and magnitude for doc A
     termsA.forEach((tA) => {
         const weightB = termsBMap[tA.term] || 0;
         dot += tA.tfidf * weightB;
         magA += tA.tfidf * tA.tfidf;
     });
 
-    // Compute magnitude for doc B
     termsB.forEach((tB) => {
         magB += tB.tfidf * tB.tfidf;
     });
