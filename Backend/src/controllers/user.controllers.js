@@ -1,8 +1,39 @@
 const path = require("path");
-const db = require("../db/database.js")
-const bodyParser = require('body-parser')
+const db = require("../db/database.js");
+const bodyParser = require("body-parser");
 const fs = require("fs");
-const { embedTexts, cosineSimilarity } = require("../../Bert/bertMatching.js");
+const natural = require("natural");
+
+// Function to calculate cosine similarity between two TF-IDF vectors
+function cosineSimilarity(tfidf, indexA, indexB) {
+    const termsA = tfidf.listTerms(indexA);
+    const termsB = tfidf.listTerms(indexB);
+
+    let dot = 0;
+    let magA = 0;
+    let magB = 0;
+    const termsBMap = {};
+
+    // Build a map for doc B term weights
+    termsB.forEach((t) => {
+        termsBMap[t.term] = t.tfidf;
+    });
+
+    // Compute dot product and magnitude for doc A
+    termsA.forEach((tA) => {
+        const weightB = termsBMap[tA.term] || 0;
+        dot += tA.tfidf * weightB;
+        magA += tA.tfidf * tA.tfidf;
+    });
+
+    // Compute magnitude for doc B
+    termsB.forEach((tB) => {
+        magB += tB.tfidf * tB.tfidf;
+    });
+
+    const denominator = Math.sqrt(magA) * Math.sqrt(magB);
+    return denominator ? dot / denominator : 0;
+}
 
 exports.matchDocument = async (req, res) => {
     const docId = req.params.docId;
@@ -24,26 +55,22 @@ exports.matchDocument = async (req, res) => {
                 return res.status(500).json({ message: "Database error", matches: [] });
             }
 
-            const allTexts = [sourceDoc.content, ...docs.map(doc => doc.content)];
+            const tfidf = new natural.TfIdf();
+            tfidf.addDocument(sourceDoc.content);
 
-            console.log("🔍 Fetching embeddings for all documents...");
-            const embeddings = await embedTexts(allTexts);
-            if (!embeddings || embeddings.length !== allTexts.length) {
-                return res.status(500).json({ message: "Failed to fetch embeddings", matches: [] });
-            }
-
-            const sourceEmbedding = embeddings[0];
-            const docEmbeddings = embeddings.slice(1);
+            docs.forEach((doc) => {
+                tfidf.addDocument(doc.content);
+            });
 
             let matches = [];
             docs.forEach((doc, index) => {
-                const similarityScore = cosineSimilarity(sourceEmbedding, docEmbeddings[index]);
+                const similarityScore = cosineSimilarity(tfidf, 0, index + 1);
 
-                if (similarityScore > 0.7) { 
+                if (similarityScore > 0.7) {
                     matches.push({
                         id: doc.id,
                         filename: doc.filename,
-                        similarity: similarityScore.toFixed(2)
+                        similarity: similarityScore.toFixed(2),
                     });
                 }
             });
@@ -53,9 +80,9 @@ exports.matchDocument = async (req, res) => {
             res.json({
                 sourceDocument: {
                     id: sourceDoc.id,
-                    filename: sourceDoc.filename
+                    filename: sourceDoc.filename,
                 },
-                matches
+                matches,
             });
         });
     });
