@@ -50,6 +50,13 @@ The backend will run on `http://localhost:3000`.
 
 ---
 
+## ScreenShots
+
+![Login Page Screenshot](Images/Screenshot (16).png)
+
+
+---
+
 ## API Routes
 ### **Authentication**
 | Method | Endpoint | Description |
