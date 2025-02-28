@@ -73,7 +73,7 @@ body::before {
 .logout-btn{
     border-style: none;
     background-color: #ffffff;
-    margin-top: 200px;
+    margin-top: 150px;
     background: url('../public/IMG_8997.jpeg') no-repeat center center fixed;
     background-size: cover;
 }
