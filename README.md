@@ -50,10 +50,14 @@ The backend will run on `http://localhost:3000`.
 
 ---
 
-## ScreenShots
+## Screenshots
 ---
-<img src="Images/Screenshot (16).png" alt="Screenshot" width="600">
-<img src="Images/Screenshot (19).png" alt="Screenshot" width='600>
+
+### Screenshot 1
+<img src="Images/Screenshot (16).png" alt="Screenshot 1" width="600">
+
+### Screenshot 2
+<img src="Images/Screenshot (19).png" alt="Screenshot 2" width="600">
 
 ---
 
