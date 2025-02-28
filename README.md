@@ -285,6 +285,4 @@ This document provides API endpoints for both Admin and User roles, detailing th
 
 ---
 
-## License
-This project is licensed under the MIT License.
 
