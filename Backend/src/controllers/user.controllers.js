@@ -2,6 +2,64 @@ const path = require("path");
 const db = require("../db/database.js")
 const bodyParser = require('body-parser')
 const fs = require("fs");
+const { embedTexts, cosineSimilarity } = require("../../Bert/bertMatching.js");
+
+exports.matchDocument = async (req, res) => {
+    const docId = req.params.docId;
+    console.log("🔍 Matching document:", docId);
+
+    db.get("SELECT id, filename, content FROM documents WHERE id = ?", [docId], async (err, sourceDoc) => {
+        if (err || !sourceDoc) {
+            console.error("Error fetching document:", err);
+            return res.status(500).json({ message: "Error fetching document", matches: [] });
+        }
+
+        if (!sourceDoc.content || sourceDoc.content.trim() === "") {
+            return res.status(400).json({ message: "Source document has no content to compare", matches: [] });
+        }
+
+        db.all("SELECT id, filename, content FROM documents WHERE id != ? AND content IS NOT NULL", [docId], async (err, docs) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ message: "Database error", matches: [] });
+            }
+
+            const allTexts = [sourceDoc.content, ...docs.map(doc => doc.content)];
+
+            console.log("🔍 Fetching embeddings for all documents...");
+            const embeddings = await embedTexts(allTexts);
+            if (!embeddings || embeddings.length !== allTexts.length) {
+                return res.status(500).json({ message: "Failed to fetch embeddings", matches: [] });
+            }
+
+            const sourceEmbedding = embeddings[0];
+            const docEmbeddings = embeddings.slice(1);
+
+            let matches = [];
+            docs.forEach((doc, index) => {
+                const similarityScore = cosineSimilarity(sourceEmbedding, docEmbeddings[index]);
+
+                if (similarityScore > 0.7) { 
+                    matches.push({
+                        id: doc.id,
+                        filename: doc.filename,
+                        similarity: similarityScore.toFixed(2)
+                    });
+                }
+            });
+
+            matches.sort((a, b) => b.similarity - a.similarity);
+
+            res.json({
+                sourceDocument: {
+                    id: sourceDoc.id,
+                    filename: sourceDoc.filename
+                },
+                matches
+            });
+        });
+    });
+};
 
 
 exports.getUserPage = (req, res) => {
@@ -24,96 +82,6 @@ exports.getUserPage = (req, res) => {
         });
     });
 };
-
-
-// Levenshtein Distance Function (Basic Text Similarity)
-function levenshteinDistance(s1, s2) {
-    if (!s1 || !s2) return 0;
-    
-    s1 = s1.toString();
-    s2 = s2.toString();
-    
-    const len1 = s1.length, len2 = s2.length;
-    let matrix = Array(len1 + 1).fill(null).map(() => Array(len2 + 1).fill(null));
-
-    for (let i = 0; i <= len1; i++) matrix[i][0] = i;
-    for (let j = 0; j <= len2; j++) matrix[0][j] = j;
-
-    for (let i = 1; i <= len1; i++) {
-        for (let j = 1; j <= len2; j++) {
-            const cost = s1[i - 1] === s2[j - 1] ? 0 : 1;
-            matrix[i][j] = Math.min(
-                matrix[i - 1][j] + 1,
-                matrix[i][j - 1] + 1,
-                matrix[i - 1][j - 1] + cost
-            );
-        }
-    }
-    return matrix[len1][len2];
-}
-
-
-exports.matchDocument = (req, res) => {
-    const docId = req.params.docId;
-    console.log("matchDocument API called for docId:", docId); // ✅ Debugging log
-
-    db.get(
-        `SELECT d.id, d.filename, d.content FROM documents d WHERE d.id = ?`, 
-        [docId], 
-        (err, sourceDoc) => {
-            if (err) {
-                console.error("Database error:", err);
-                return res.status(500).json({ message: 'Database error', matches: [] });
-            }
-            
-            if (!sourceDoc) {
-                console.log("Document not found in DB.");
-                return res.status(404).json({ message: 'Document not found', matches: [] });
-            }
-
-            if (!sourceDoc.content || sourceDoc.content.trim() === "") {
-                console.log("Document has no content:", sourceDoc);
-                return res.status(400).json({ message: 'Source document has no content to compare', matches: [] });
-            }
-
-            // Proceed with document matching...
-            db.all(
-                `SELECT d.id, d.filename, d.content 
-                 FROM documents d 
-                 WHERE d.id != ? AND d.content IS NOT NULL`,  // Only get documents with content
-                [docId],
-                (err, docs) => {
-                    if (err) {
-                        console.error("Database error:", err);
-                        return res.status(500).json({ message: "Database error", matches: [] });
-                    }
-
-                    // Calculate similarity for each document
-                    const matches = docs
-                        .filter(doc => doc.content) // Extra safety check
-                        .map(doc => ({
-                            id: doc.id,
-                            filename: doc.filename,
-                            similarity: 1 - (levenshteinDistance(sourceDoc.content, doc.content) / 
-                                          Math.max(sourceDoc.content.length, doc.content.length))
-                        }))
-                        .filter(m => m.similarity > 0.7)
-                        .sort((a, b) => b.similarity - a.similarity);
-
-                    res.json({ 
-                        sourceDocument: {
-                            id: sourceDoc.id,
-                            filename: sourceDoc.filename
-                        },
-                        matches 
-                    });
-                }
-            );
-            
-        }
-    );
-};
-
 
 
 exports.uploadDocument = (req, res) => {
@@ -146,7 +114,6 @@ exports.uploadDocument = (req, res) => {
                     db.run("UPDATE users SET credits = credits - 1 WHERE id = ?", [req.user.id], (err) => {
                         if (err) return res.status(500).json({ message: "Error updating credits" });
 
-                        // ✅ Log Activity in DB
                         db.run(
                             "INSERT INTO activity_logs (username, action, details) VALUES (?, ?, ?)",
                             [req.user.username, "Document Scan", `Scanned file: ${filename}`],
@@ -220,7 +187,6 @@ exports.getCredits = (req, res) => {
             (err) => {
                 if (err) return res.status(500).json({ message: "Request Failed" });
 
-                // ✅ Log Activity in DB
                 db.run(
                     "INSERT INTO activity_logs (username, action, details) VALUES (?, ?, ?)",
                     [username, "Credit Request", `Requested ${requested_credits} credits`],
@@ -247,6 +213,5 @@ exports.openFile = (req, res) => {
         });
     });
 };
-
 
 
