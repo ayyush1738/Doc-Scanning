@@ -2,14 +2,13 @@ const axios = require("axios");
 require("dotenv").config();
 
 const API_URL = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2";
-const API_KEY = process.env.HUGGINGFACE_API_KEY;  // Use .env file for security
+const API_KEY = "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";
 
-// Function to get BERT embeddings for multiple texts
 async function embedTexts(textArray) {
     try {
         const response = await axios.post(
             API_URL,
-            { inputs: textArray },  // Send multiple texts at once
+            { inputs: textArray }, 
             {
                 headers: {
                     Authorization: `Bearer ${API_KEY}`,
@@ -19,18 +18,17 @@ async function embedTexts(textArray) {
         );
 
         if (!Array.isArray(response.data) || response.data.some(item => !Array.isArray(item))) {
-            console.error("❌ Unexpected API response:", response.data);
+            console.error("Unexpected API response:", response.data);
             return null;
         }
 
-        return response.data; // Return array of embeddings
+        return response.data; 
     } catch (error) {
-        console.error("❌ Error fetching BERT embeddings:", error.response?.data || error.message);
+        console.error("Error fetching BERT embeddings:", error.response?.data || error.message);
         return null;
     }
 }
 
-// Function to compute Cosine Similarity
 function cosineSimilarity(vec1, vec2) {
     if (!vec1 || !vec2 || vec1.length !== vec2.length) return 0;
 
