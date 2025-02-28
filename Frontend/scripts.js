@@ -58,9 +58,11 @@ async function loginUser(e) {
         });
 
         const data = await response.json();
+        console.log("data: ",data);
 
         if (data.message === "Login successful") {
             window.location.href = data.user.role === "admin" ? "dashboard.html" : `user.html?username=${username}`;
+            
         } else {
             alert(data.message);
         }
@@ -167,7 +169,7 @@ async function uploadDocument(e) {
     formData.append("document", fileInput);
 
     try {
-        const response = await fetch("http://localhost:3000/user/regularUser/upload", {
+        const response = await fetch("http://localhost:3000/user/regularUser/scanUpload", {
             method: "POST",
             body: formData,
             credentials: "include"
