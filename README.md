@@ -57,9 +57,6 @@ The backend will run on `http://localhost:3000`.
 <img src="Images/Screenshot (19).png" alt="Screenshot" width='600>
 <img src="Images/Screenshot (19).png" alt="Screenshot" width='600>
 
-
----
-
 ## API Routes
 ### **Authentication**
 | Method | Endpoint | Description |
