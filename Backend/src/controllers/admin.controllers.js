@@ -1,4 +1,3 @@
-// Backend - admin.controllers.js
 const db = require("../db/database.js");
 
 exports.getDashboard = (req, res) => {
@@ -57,7 +56,6 @@ exports.getAdminAnalytics = (req, res) => {
 
 
 
-// Fetch all pending credit requests for admin panel
 exports.getCreditRequests = (req, res) => {
     db.all(`
         SELECT cr.id, u.username, cr.requested_credits 
@@ -76,7 +74,6 @@ exports.getCreditRequests = (req, res) => {
 };
 
 
-// Approve Credit Request (Add credits to user and remove from pending)
 exports.approveCreditRequest = (req, res) => {
     const { requestId } = req.body;
 
@@ -95,7 +92,6 @@ exports.approveCreditRequest = (req, res) => {
         db.serialize(() => {
             db.run("BEGIN TRANSACTION");
 
-            // Update user's credits
             db.run("UPDATE users SET credits = credits + ? WHERE id = ?", [requested_credits, user_id], (err) => {
                 if (err) {
                     console.error("Error updating user credits:", err.message);
@@ -103,7 +99,6 @@ exports.approveCreditRequest = (req, res) => {
                     return res.status(500).json({ message: "Error updating user credits" });
                 }
 
-                // Remove the request from pending
                 db.run("DELETE FROM credit_requests WHERE id = ?", [requestId], (err) => {
                     if (err) {
                         console.error("Error deleting credit request:", err.message);
@@ -119,7 +114,6 @@ exports.approveCreditRequest = (req, res) => {
     });
 };
 
-// Deny Credit Request (Simply remove from pending requests)
 exports.denyCreditRequest = (req, res) => {
     const { requestId } = req.body;
 
@@ -132,8 +126,7 @@ exports.denyCreditRequest = (req, res) => {
     });
 };
 
-// Update User Credits Manually (Admin Control)
-// Update User Credits Manually (Admin Control)
+
 exports.updateUserCredits = (req, res) => {
     const { userId, amount } = req.body;
 
@@ -153,17 +146,14 @@ exports.updateUserCredits = (req, res) => {
 
         let newCredits = user.credits + amount;
 
-        // Prevent credits from exceeding 20
         if (newCredits > 20) {
             return res.status(400).json({ message: "Cannot increase credits beyond 20." });
         }
 
-        // Prevent negative credits
         if (newCredits < 0) {
             return res.status(400).json({ message: "Credits cannot be negative." });
         }
 
-        // Update user's credits in the database
         db.run("UPDATE users SET credits = ? WHERE id = ?", [newCredits, userId], (err) => {
             if (err) {
                 console.error("Error updating credits:", err.message);
@@ -187,7 +177,7 @@ exports.getActivityLogs = (req, res) => {
             return res.status(500).json({ message: "Database error" });
         }
 
-        console.log("Fetched Activity Logs:", logs);  // ✅ Debugging Log
+        console.log("Fetched Activity Logs:", logs); 
         res.json({ logs });
     });
 };
