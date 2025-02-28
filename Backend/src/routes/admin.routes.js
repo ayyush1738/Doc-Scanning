@@ -10,7 +10,7 @@ router.get("/analytics", authenticateToken, getAdminAnalytics);
 router.get("/credit-requests", authenticateToken, getCreditRequests);
 router.post("/approve-credit", authenticateToken, approveCreditRequest);
 router.post("/deny-credit", authenticateToken, denyCreditRequest);
-router.post("credits/requestRequest", authenticateToken, updateUserCredits);
+router.post("/update-credits", authenticateToken, updateUserCredits);
 router.get("/activity-logs", authenticateToken, getActivityLogs);
 
 

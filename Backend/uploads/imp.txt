@@ -1,0 +1,1220 @@
+frontend/
+index.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Scanning System - Auth</title>
+    <link rel="stylesheet" href="./style/indexStyles.css">
+    <script defer src="scripts.js"></script>
+    <script defer src="./style/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!--GOOGLE FONTS-->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <img id="cath-logo" src="./public/cathago.svg" alt="alt">
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+    
+        <div class="nav-container">
+            <ul class="navItems">
+                <li><a href="#">Home</a></li>
+                <li><a href="#main">About Us</a></li>
+                <li><a href="#" id="signInButton">SignIn</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+     
+
+    <section class="hero">
+        <div>
+            <h1 class="quote">Seamless Scanning <br>of your documents</h1>
+            <button class="button" id="btn" onclick="showForm()">
+                <span class="text">Discover</span>
+                <span class="svg">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50"
+                    height="20"
+                    viewBox="0 0 38 15"
+                    fill="none"
+                >
+                    <path
+                    fill="white"
+                    d="M10 7.519l-.939-.344h0l.939.344zm14.386-1.205l-.981-.192.981.192zm1.276 5.509l.537.843.148-.094.107-.139-.792-.611zm4.819-4.304l-.385-.923h0l.385.923zm7.227.707a1 1 0 0 0 0-1.414L31.343.448a1 1 0 0 0-1.414 0 1 1 0 0 0 0 1.414l5.657 5.657-5.657 5.657a1 1 0 0 0 1.414 1.414l6.364-6.364zM1 7.519l.554.833.029-.019.094-.061.361-.23 1.277-.77c1.054-.609 2.397-1.32 3.629-1.787.617-.234 1.17-.392 1.623-.455.477-.066.707-.008.788.034.025.013.031.021.039.034a.56.56 0 0 1 .058.235c.029.327-.047.906-.39 1.842l1.878.689c.383-1.044.571-1.949.505-2.705-.072-.815-.45-1.493-1.16-1.865-.627-.329-1.358-.332-1.993-.244-.659.092-1.367.305-2.056.566-1.381.523-2.833 1.297-3.921 1.925l-1.341.808-.385.245-.104.068-.028.018c-.011.007-.011.007.543.84zm8.061-.344c-.198.54-.328 1.038-.36 1.484-.032.441.024.94.325 1.364.319.45.786.64 1.21.697.403.054.824-.001 1.21-.09.775-.179 1.694-.566 2.633-1.014l3.023-1.554c2.115-1.122 4.107-2.168 5.476-2.524.329-.086.573-.117.742-.115s.195.038.161.014c-.15-.105.085-.139-.076.685l1.963.384c.192-.98.152-2.083-.74-2.707-.405-.283-.868-.37-1.28-.376s-.849.069-1.274.179c-1.65.43-3.888 1.621-5.909 2.693l-2.948 1.517c-.92.439-1.673.743-2.221.87-.276.064-.429.065-.492.057-.043-.006.066.003.155.127.07.099.024.131.038-.063.014-.187.078-.49.243-.94l-1.878-.689zm14.343-1.053c-.361 1.844-.474 3.185-.413 4.161.059.95.294 1.72.811 2.215.567.544 1.242.546 1.664.459a2.34 2.34 0 0 0 .502-.167l.15-.076.049-.028.018-.011c.013-.008.013-.008-.524-.852l-.536-.844.019-.012c-.038.018-.064.027-.084.032-.037.008.053-.013.125.056.021.02-.151-.135-.198-.895-.046-.734.034-1.887.38-3.652l-1.963-.384zm2.257 5.701l.791.611.024-.031.08-.101.311-.377 1.093-1.213c.922-.954 2.005-1.894 2.904-2.27l-.771-1.846c-1.31.547-2.637 1.758-3.572 2.725l-1.184 1.314-.341.414-.093.117-.025.032c-.01.013-.01.013.781.624zm5.204-3.381c.989-.413 1.791-.42 2.697-.307.871.108 2.083.385 3.437.385v-2c-1.197 0-2.041-.226-3.19-.369-1.114-.139-2.297-.146-3.715.447l.771 1.846z"
+                    ></path>
+                </svg>
+                </span>
+            </button>  
+        </div>
+        <div class="folder">
+            <img src="./public/folder.webp" alt="" style="height: 200px; ">
+        </div>
+         
+    </section>
+
+    <section id="main">
+        <h1 id="main-head">Our Services</h1>
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                <div class="card">
+                    <img src="./public//IMG_8978.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+                <div class="card">
+                    <img src="./public/IMG_8979.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+                <div class="card">
+                    <img src="./public/IMG_8980.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+                <div class="card">
+                    <img src="./public/IMG_8981.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="container">
+        <div class="form-container" id="login-form">
+            <h2 class="heading">Login</h2>
+            <form action="/auth/login" method="POST">
+                <input type="text" placeholder="Username" id="login-username" name="username" required>
+
+                <input type="password" placeholder="Password" id="login-password" name="password" required>
+                <button type="submit">Sign In</button>
+                <p>Don't have an account? <a href="#" onclick="toggleForms()">Register here</a></p>
+            </form>
+        </div>
+
+        <div class="form-container hidden" id="register-form">
+            <h2>Register</h2>
+            <form action="/auth/register" method="POST">
+                <label for="new-username">Username:</label>
+                <input type="text" id="new-username" name="username" required>
+
+                <label for="new-password">Password:</label>
+                <input type="password" id="new-password" name="password" required>
+
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm_password" required>
+
+                <label for="register-role">Role:</label>
+                <select id="register-role" name="role">
+                    <option value="user">Regular User</option>
+                    <option value="admin">Admin</option>
+                </select>
+
+                <button type="submit">Register</button>
+                <p>Already have an account? <a href="#" onclick="toggleForms()">Login here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer">
+        <div class="row">
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        </div>
+        
+        <div class="row">
+        <ul>
+        <li><a href="#main-head">Our Services</a></li>
+        <li><a target="_blank" href="https://ayush-portfolio-rust.vercel.app/">My Portfolio</a></li>
+        <li><a target="_blank" href="https://leetcode.com/u/ayush_1738/">My Leetcode</a></li>
+        </ul>
+        </div>
+        
+        <div class="row">
+        Ayush Singh Rathore Copyright © 2025  - All rights are reserved
+        </div>
+        </div>
+        </footer>
+
+    
+
+    <script>
+        function toggleForms() {
+            document.getElementById("login-form").classList.toggle("hidden");
+            document.getElementById("register-form").classList.toggle("hidden");
+        }
+
+    
+
+        
+
+    const slider = document.getElementById('slider');
+    function moveSlider() {
+        const firstCard = slider.firstElementChild;
+        slider.style.transition = 'transform 0.5s linear';
+    
+        slider.style.transform = 'translateX(-500px)'
+        setTimeout(() => {
+            slider.style.transition = 'none';
+            slider.appendChild(firstCard);
+            slider.style.transform = 'translateX(0px)';
+        }, 600);
+    }
+    setInterval(moveSlider, 5000);
+    </script>
+
+</body>
+</html>
+
+
+user.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Scanning System - Auth</title>
+    <link rel="stylesheet" href="./style/indexStyles.css">
+    <script defer src="scripts.js"></script>
+    <script defer src="./style/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!--GOOGLE FONTS-->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <img id="cath-logo" src="./public/cathago.svg" alt="alt">
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+    
+        <div class="nav-container">
+            <ul class="navItems">
+                <li><a href="#">Home</a></li>
+                <li><a href="#main">About Us</a></li>
+                <li><a href="#" id="signInButton">SignIn</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+     
+
+    <section class="hero">
+        <div>
+            <h1 class="quote">Seamless Scanning <br>of your documents</h1>
+            <button class="button" id="btn" onclick="showForm()">
+                <span class="text">Discover</span>
+                <span class="svg">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50"
+                    height="20"
+                    viewBox="0 0 38 15"
+                    fill="none"
+                >
+                    <path
+                    fill="white"
+                    d="M10 7.519l-.939-.344h0l.939.344zm14.386-1.205l-.981-.192.981.192zm1.276 5.509l.537.843.148-.094.107-.139-.792-.611zm4.819-4.304l-.385-.923h0l.385.923zm7.227.707a1 1 0 0 0 0-1.414L31.343.448a1 1 0 0 0-1.414 0 1 1 0 0 0 0 1.414l5.657 5.657-5.657 5.657a1 1 0 0 0 1.414 1.414l6.364-6.364zM1 7.519l.554.833.029-.019.094-.061.361-.23 1.277-.77c1.054-.609 2.397-1.32 3.629-1.787.617-.234 1.17-.392 1.623-.455.477-.066.707-.008.788.034.025.013.031.021.039.034a.56.56 0 0 1 .058.235c.029.327-.047.906-.39 1.842l1.878.689c.383-1.044.571-1.949.505-2.705-.072-.815-.45-1.493-1.16-1.865-.627-.329-1.358-.332-1.993-.244-.659.092-1.367.305-2.056.566-1.381.523-2.833 1.297-3.921 1.925l-1.341.808-.385.245-.104.068-.028.018c-.011.007-.011.007.543.84zm8.061-.344c-.198.54-.328 1.038-.36 1.484-.032.441.024.94.325 1.364.319.45.786.64 1.21.697.403.054.824-.001 1.21-.09.775-.179 1.694-.566 2.633-1.014l3.023-1.554c2.115-1.122 4.107-2.168 5.476-2.524.329-.086.573-.117.742-.115s.195.038.161.014c-.15-.105.085-.139-.076.685l1.963.384c.192-.98.152-2.083-.74-2.707-.405-.283-.868-.37-1.28-.376s-.849.069-1.274.179c-1.65.43-3.888 1.621-5.909 2.693l-2.948 1.517c-.92.439-1.673.743-2.221.87-.276.064-.429.065-.492.057-.043-.006.066.003.155.127.07.099.024.131.038-.063.014-.187.078-.49.243-.94l-1.878-.689zm14.343-1.053c-.361 1.844-.474 3.185-.413 4.161.059.95.294 1.72.811 2.215.567.544 1.242.546 1.664.459a2.34 2.34 0 0 0 .502-.167l.15-.076.049-.028.018-.011c.013-.008.013-.008-.524-.852l-.536-.844.019-.012c-.038.018-.064.027-.084.032-.037.008.053-.013.125.056.021.02-.151-.135-.198-.895-.046-.734.034-1.887.38-3.652l-1.963-.384zm2.257 5.701l.791.611.024-.031.08-.101.311-.377 1.093-1.213c.922-.954 2.005-1.894 2.904-2.27l-.771-1.846c-1.31.547-2.637 1.758-3.572 2.725l-1.184 1.314-.341.414-.093.117-.025.032c-.01.013-.01.013.781.624zm5.204-3.381c.989-.413 1.791-.42 2.697-.307.871.108 2.083.385 3.437.385v-2c-1.197 0-2.041-.226-3.19-.369-1.114-.139-2.297-.146-3.715.447l.771 1.846z"
+                    ></path>
+                </svg>
+                </span>
+            </button>  
+        </div>
+        <div class="folder">
+            <img src="./public/folder.webp" alt="" style="height: 200px; ">
+        </div>
+         
+    </section>
+
+    <section id="main">
+        <h1 id="main-head">Our Services</h1>
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                <div class="card">
+                    <img src="./public//IMG_8978.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+                <div class="card">
+                    <img src="./public/IMG_8979.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+                <div class="card">
+                    <img src="./public/IMG_8980.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+                <div class="card">
+                    <img src="./public/IMG_8981.jpeg" alt="">
+                    <section>Document Scanning & Matching</section>
+                    <p>Lorem ipsum dolor sit amet, 
+                        consectetur adipisicing elit. 
+                        Fuga quibusdam esse mollitia quod possimus deserunt quia, 
+                        impedit, earum quaerat ipsa dicta eius modi harum 
+                        commodi itaque voluptas sit nobis maiores?
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="container">
+        <div class="form-container" id="login-form">
+            <h2 class="heading">Login</h2>
+            <form action="/auth/login" method="POST">
+                <input type="text" placeholder="Username" id="login-username" name="username" required>
+
+                <input type="password" placeholder="Password" id="login-password" name="password" required>
+                <button type="submit">Sign In</button>
+                <p>Don't have an account? <a href="#" onclick="toggleForms()">Register here</a></p>
+            </form>
+        </div>
+
+        <div class="form-container hidden" id="register-form">
+            <h2>Register</h2>
+            <form action="/auth/register" method="POST">
+                <label for="new-username">Username:</label>
+                <input type="text" id="new-username" name="username" required>
+
+                <label for="new-password">Password:</label>
+                <input type="password" id="new-password" name="password" required>
+
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm_password" required>
+
+                <label for="register-role">Role:</label>
+                <select id="register-role" name="role">
+                    <option value="user">Regular User</option>
+                    <option value="admin">Admin</option>
+                </select>
+
+                <button type="submit">Register</button>
+                <p>Already have an account? <a href="#" onclick="toggleForms()">Login here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer">
+        <div class="row">
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        </div>
+        
+        <div class="row">
+        <ul>
+        <li><a href="#main-head">Our Services</a></li>
+        <li><a target="_blank" href="https://ayush-portfolio-rust.vercel.app/">My Portfolio</a></li>
+        <li><a target="_blank" href="https://leetcode.com/u/ayush_1738/">My Leetcode</a></li>
+        </ul>
+        </div>
+        
+        <div class="row">
+        Ayush Singh Rathore Copyright © 2025  - All rights are reserved
+        </div>
+        </div>
+        </footer>
+
+    
+
+    <script>
+        function toggleForms() {
+            document.getElementById("login-form").classList.toggle("hidden");
+            document.getElementById("register-form").classList.toggle("hidden");
+        }
+
+    
+
+        
+
+    const slider = document.getElementById('slider');
+    function moveSlider() {
+        const firstCard = slider.firstElementChild;
+        slider.style.transition = 'transform 0.5s linear';
+    
+        slider.style.transform = 'translateX(-500px)'
+        setTimeout(() => {
+            slider.style.transition = 'none';
+            slider.appendChild(firstCard);
+            slider.style.transform = 'translateX(0px)';
+        }, 600);
+    }
+    setInterval(moveSlider, 5000);
+    </script>
+
+</body>
+</html>
+
+dashboard.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Analytics Dashboard</title>
+    <link rel="stylesheet" href="./style/dashboardStyles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Analytics</h2>
+        <a href="#" onclick="showPage(1)" class="active">Scans/Topics</a>
+        <a href="#" onclick="showPage(2)">Top Users by Scans</a>
+        <a href="#" onclick="showPage(3)">Credit Usage Stats</a>
+        <a href="#" onclick="showPage(4)">Scans per User</a>
+        <a href="#" onclick="showPage(5)">Approved/Pending</a>
+        <a href="#" onclick="showPage(6)">Activity logs</a>
+        <div class="logout-section">
+            <button onclick="logout()" class="logout-btn">
+                <img src="./public/logout3.png" alt="">
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Dashboard</h1>
+
+        <!-- Page 1: Total Scans & Top Topics -->
+        <div id="page1" class="page">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h2>Total Scans Today</h2>
+                    <p id="total-scans">Loading...</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Top Scanned Topics</h2>
+                    <p id="top-topics">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Top Users by Scans -->
+        <div id="page2" class="page">
+            <h2>Top Users by Scans</h2>
+            <canvas id="topUsersChart"></canvas>
+        </div>
+
+        <!-- Page 3: Credit Usage Stats -->
+        <div id="page3" class="page">
+            <h2>Daily Credit Usage Stats</h2>
+            <canvas id="creditChart"></canvas>
+            <input type="text" id="searchCreditsUser" placeholder="Search by Uid" onkeyup="filterCreditsTable()">
+            <table id="credit-scans-table">
+                <thead>
+                    <tr>
+                        <th>Uid</th>
+                        <th>Username</th>
+                        <th>Credits Used</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+<div id="page4" class="page">
+    <h2>Scans per User</h2>
+    <input type="text" id="searchUser" placeholder="Search by Uid" onkeyup="filterScansTable()">
+    <table id="user-scans-table">
+        <thead>
+            <tr>
+                <th>Uid</th>
+                <th>Username</th>
+                <th>Scans Today</th>
+                <th>Total Scans</th>
+                <th>Remaining Credits</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<!-- Pending Credit Requests Table -->
+<div id="page5" class="page">
+    <h2>Pending Credit Requests</h2>
+    <table id="pending-credit-requests">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Username</th>
+                <th>Requested Credits</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <table id="processed-credit-requests">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Username</th>
+                <th>Requested Credits</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<!-- Page 7: User Activity Logs -->
+<div id="page6" class="page">
+    <h2>User Activity Logs</h2>
+    <input type="text" id="searchActivity" placeholder="Search by Username" onkeyup="filterActivityTable()">
+    <table id="activity-logs-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Username</th>
+                <th>Action</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+
+
+
+    <script src="./dashboard.js"></script>
+</body>
+</html>
+
+script.js:
+document.addEventListener("DOMContentLoaded", async () => {
+    // Add event listeners only if the forms exist
+    const registerForm = document.getElementById("register-form");
+    if (registerForm) registerForm.addEventListener("submit", registerUser);
+
+    const loginForm = document.getElementById("login-form");
+    if (loginForm) loginForm.addEventListener("submit", loginUser);
+
+    const uploadForm = document.getElementById("upload-form");
+    if (uploadForm) uploadForm.addEventListener("submit", uploadDocument);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("username");
+
+    const requestCreditsBtn = document.getElementById("requestCreditsBtn");
+    if (requestCreditsBtn) {
+        requestCreditsBtn.addEventListener("click", () => requestCredits(username));
+    }
+
+    if (username) {
+        await checkUserRole(username);
+    }
+});
+
+async function registerUser(e) {
+    e.preventDefault();
+    const username = document.getElementById("new-username").value;
+    const password = document.getElementById("new-password").value;
+    const role = document.getElementById("register-role").value;
+
+    try {
+        const response = await fetch("http://localhost:3000/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ username, password, role })
+        });
+
+        const data = await response.text();
+        alert(data);
+    } catch (error) {
+        console.error("Error registering user:", error);
+    }
+}
+
+
+async function loginUser(e) {
+    e.preventDefault();
+    const username = document.getElementById("login-username").value;
+    const password = document.getElementById("login-password").value;
+
+    try {
+        const response = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.message === "Login successful") {
+            window.location.href = data.user.role === "admin" ? "dashboard.html" : `user.html?username=${username}`;
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error logging in:", error);
+    }
+}
+
+async function checkUserRole(username) {
+    try {
+        const response = await fetch("http://localhost:3000/auth/checkRole", {
+            method: "GET",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (response.status === 401) {
+            alert("Session expired! Please log in again.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        const data = await response.json();
+        if (data.role !== "user") {
+            alert("Unauthorized Access! Redirecting...");
+            window.location.href = "index.html";
+        } else {
+            await showProfile(username);
+        }
+    } catch (error) {
+        console.error("Error checking user role:", error);
+    }
+}
+
+
+// Fetch and display user profile
+async function showProfile(username) {
+    try {
+        const response = await fetch(`http://localhost:3000/user/profile?username=${username}`);
+        const profile = await response.json();
+
+        if (!profile.pastScans) {
+            profile.pastScans = [];
+        }
+
+        // Populate user details
+        document.getElementById("welcomeMessage").textContent = `Welcome, ${profile.username}`;
+        document.getElementById("userDetails").textContent = `Remaining Credits: ${profile.role === 'admin' ? 'Unlimited' : profile.credits} | Role: ${profile.role}`;
+
+        // Populate past scans
+        const pastScansList = document.getElementById("pastScansList");
+        pastScansList.innerHTML = ""; // Clear previous list
+
+        if (profile.pastScans.length > 0) {
+            profile.pastScans.forEach(doc => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${doc.filename} (${doc.upload_date}) `;
+
+                const button = document.createElement("button");
+                button.textContent = "Find Matches";
+                listItem.classList.add("list-items")
+                button.classList.add("findMatchesBtn"); // Assigning class
+                button.onclick = () => findMatches(doc.id, username);
+
+                listItem.appendChild(button);
+                pastScansList.appendChild(listItem);
+            });
+        } else {
+            const emptyItem = document.createElement("li");
+            emptyItem.textContent = "No past scans available.";
+            pastScansList.appendChild(emptyItem);
+        }
+
+        // Show credit request section for regular users
+        if (profile.role === 'user') {
+            document.getElementById("creditRequestSection").style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+    }
+}
+
+
+
+/**
+ * Upload document for scanning
+ */
+async function uploadDocument(e) {
+    e.preventDefault();
+
+    const fileInput = document.getElementById("file-input").files[0];
+    if (!fileInput) {
+        alert("Please select a file!");
+        return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get("username");
+
+    const formData = new FormData();
+    formData.append("document", fileInput);
+
+    try {
+        const response = await fetch("http://localhost:3000/user/regularUser/upload", {
+            method: "POST",
+            body: formData,
+            credentials: "include"
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            if (response.status === 400) {
+                alert("No file uploaded!");
+            } else if (response.status === 403) {
+                alert("Not enough credits! Request more credits.");
+            } else if (response.status === 500) {
+                alert(data.message || "Server error occurred. Please try again later.");
+            } else {
+                alert("File upload failed!");
+            }
+            return;
+        }
+
+        alert("File uploaded successfully!");
+        await showProfile(username); // ✅ Refresh profile to display uploaded file
+
+    } catch (error) {
+        console.error("Error uploading document:", error);
+        alert("An unexpected error occurred. Please try again.");
+    }
+}
+
+
+
+
+async function findMatches(docId, username) {
+    console.log(`Attempting to fetch matches for docId: ${docId}, username: ${username}`);
+
+    try {
+        const response = await fetch(`http://localhost:3000/user/regularUser/matches/${docId}?username=${username}`, {
+            credentials: 'include' // Ensure cookies are sent for authentication
+        });
+
+        console.log("Response received:", response);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Match Data:", data);
+
+        if (!data || !Array.isArray(data.matches)) {
+            alert("No matches found.");
+            return;
+        }
+
+        // Display matches in the UI
+        const matchesList = document.getElementById("matches");
+        matchesList.innerHTML = ""; // Clear previous content
+
+        if (data.matches.length > 0) {
+            data.matches.forEach(match => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    <strong>${match.filename}</strong> 
+                    (Similarity: ${(match.similarity * 100).toFixed(1)}%)
+                    <button class="view-file-btn" onclick="openFile('${match.id}')">📄 View File</button>
+                `;
+                matchesList.appendChild(listItem);
+            });
+        } else {
+            matchesList.innerHTML = "<li>No matching documents found.</li>";
+        }
+
+        alert(`Found ${data.matches.length} matches!`);
+    } catch (error) {
+        console.error("Error finding matches:", error);
+        alert("Error finding matches. Please try again.");
+    }
+}
+
+// Function to Open File in a New Tab
+function openFile(docId) {
+    window.open(`http://localhost:3000/user/regularUser/open-file/${docId}`, "_blank");
+}
+
+
+
+
+async function requestCredits(username) {
+    const creditAmount = parseInt(document.getElementById("creditAmount").value);
+
+    if (!creditAmount || creditAmount <= 0) {
+        alert("Please enter a valid credit amount.");
+        return;
+    }
+    try {
+        const response = await fetch("http://localhost:3000/user/regularUser/requestCredits", {
+            method: "POST",  // Ensure it matches backend route type
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, requested_credits: creditAmount }),
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        alert(result.message || "Credit request submitted successfully!");
+    } catch (error) {
+        console.error("Error requesting credits:", error);
+        alert("Credit request denied. You can only request credits when your credits are exhausted");
+    }
+}
+
+function logout() {
+    fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include"
+    }).then(() => {
+        window.location.href = "index.html";  // Redirect to login page
+    }).catch(error => console.error("Logout error:", error));
+}
+
+dashboard.js:
+document.addEventListener("DOMContentLoaded", async () => {
+    const response = await fetch("/admin/analytics");
+    const data = await response.json();
+    let count = 0;
+
+    document.getElementById("total-scans").innerText = data.total_scans_today;
+    document.getElementById("top-topics").innerHTML = data.top_topics
+        .map((topic, index) => {
+            return `<span class="${index < 3 ? "highlight-topic" : ""}">${count = count + 1}${'. '} ${topic}</span>`;
+        })
+        .join("<br><br>");
+
+    createDoughnutChart(data.top_users);
+    createBarChart(data.top_credits);
+
+    // Populate Scans per User Table
+    const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
+    tableBody.innerHTML = ""; // Clear existing rows
+
+    if (data.user_scans.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No Data Available At Present</td></tr>`;
+    } else {
+        data.user_scans.forEach(user => {
+            let row = `<tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.scans_today}</td>
+                <td>${user.total_scans}</td>
+                <td>${user.credits}</td>
+                <td>${user.pending_requests}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    // Populate Credit Usage Table
+    const tableBody2 = document.getElementById("credit-scans-table").querySelector("tbody");
+    tableBody2.innerHTML = ""; // Clear existing rows
+
+    if (data.credits_used.length === 0) {
+        tableBody2.innerHTML = `<tr><td colspan="3" style="text-align:center;">No Data Available At Present</td></tr>`;
+    } else {
+        data.credits_used.forEach(user => {
+            let row = `<tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.credits_used}</td>
+            </tr>`;
+            tableBody2.innerHTML += row;
+        });
+    }
+
+    // Default page load
+    showPage(1);
+});
+
+
+
+// Function to switch between pages
+function showPage(pageNumber) {
+    document.querySelectorAll(".page").forEach(page => page.classList.remove("active-page"));
+    document.getElementById(`page${pageNumber}`).classList.add("active-page");
+
+    // Update active link in the sidebar
+    document.querySelectorAll(".sidebar a").forEach(link => link.classList.remove("active"));
+    document.querySelectorAll(".sidebar a")[pageNumber - 1].classList.add("active");
+}
+
+// Doughnut Chart for Top Users by Scans
+function createDoughnutChart(topUsers) {
+    const ctx = document.getElementById("topUsersChart").getContext("2d");
+    new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: topUsers.map(user => user.username),
+            datasets: [{
+                label: "Scans",
+                data: topUsers.map(user => user.total_scans),
+                backgroundColor: ["#04fab7", "#ffc733", "#9333ff", "#fc1091", "#6c757d"]
+            }]
+        }
+    });
+}
+
+
+function createBarChart(topCredits) {
+    const ctx = document.getElementById("creditChart").getContext("2d");
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: topCredits.map(user => user.username),
+            datasets: [{
+                label: "Credits Used",
+                data: topCredits.map(user => user.top_credits || 0),
+                backgroundColor: "rgba(247, 68, 68, 0.75)"
+
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: false // Hides vertical grid lines
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 0.5
+                    },
+                    grid: {
+                        display: false // Hides horizontal grid lines
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // Hides the dataset label box
+                }
+            }
+        }
+    });
+}
+
+
+// Function to filter table based on search input
+function filterScansTable() {
+    let input = document.getElementById("searchUser").value.toLowerCase();
+    let table = document.getElementById("user-scans-table");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
+        let usernameCell = rows[i].getElementsByTagName("td")[0]; // Username is in the first column
+        if (usernameCell) {
+            let username = usernameCell.textContent || usernameCell.innerText;
+            if (username.toLowerCase().includes(input)) {
+                rows[i].style.display = ""; // Show matching rows
+            } else {
+                rows[i].style.display = "none"; // Hide non-matching rows
+            }
+        }
+    }
+}
+
+function filterCreditsTable() {
+    let input = document.getElementById("searchCreditsUser").value.toLowerCase();
+    let table = document.getElementById("credit-scans-table");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
+        let usernameCell = rows[i].getElementsByTagName("td")[0]; // Username is in the first column
+        if (usernameCell) {
+            let username = usernameCell.textContent || usernameCell.innerText;
+            if (username.toLowerCase().includes(input)) {
+                rows[i].style.display = ""; // Show matching rows
+            } else {
+                rows[i].style.display = "none"; // Hide non-matching rows
+            }
+        }
+    }
+}
+
+
+// Function to Approve Credit Request
+// Function to Approve Credit Request
+function approveCredit(requestId) {
+    fetch("/admin/approve-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        fetchCreditRequests();  // Refresh the table
+    })
+    .catch(error => console.error("Error approving credit:", error));
+}
+
+// Function to Deny Credit Request
+function denyCredit(requestId) {
+    fetch("/admin/deny-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        fetchCreditRequests();  // Refresh the table
+    })
+    .catch(error => console.error("Error denying credit:", error));
+}
+
+// Function to Fetch and Display Credit Requests
+// Fetch and Display Pending Requests
+// Fetch and Display Users in "Scans per User" Table
+function fetchScansPerUser() {
+    fetch("/admin/analytics")
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            data.user_scans.forEach(user => {
+                let row = `<tr>
+                    <td>${user.id}</td>
+                    <td>${user.username}</td>
+                    <td>${user.scans_today}</td>
+                    <td>${user.total_scans}</td>
+                    <td id="credits-${user.id}">${user.credits}</td>
+                    <td>
+                        <button onclick="updateCredits(${user.id}, 1)">➕</button>
+                        <button onclick="updateCredits(${user.id}, -1)">➖</button>
+                    </td>
+                </tr>`;
+
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error("Error fetching scans per user:", error));
+}
+
+// Function to Update User Credits (Increment or Decrement)
+// Function to Update User Credits (Admin Controls)
+function updateCredits(userId, amount) {
+    fetch("/admin/update-credits", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId, amount })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI only if the update was successful
+            let creditsElement = document.getElementById(`credits-${userId}`);
+            creditsElement.textContent = parseInt(creditsElement.textContent) + amount;
+        }
+        alert(data.message);
+    })
+    .catch(error => console.error("Error updating credits:", error));
+}
+
+
+// Load Scans per User on Page Load
+document.addEventListener("DOMContentLoaded", fetchScansPerUser);
+
+
+// Approve Credit Request and Move to Processed Table
+function approveCredit(requestId, username, credits) {
+    fetch("/admin/approve-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        moveToProcessedTable(requestId, username, credits, "Approved");
+        fetchCreditRequests();  // Refresh the pending requests
+    })
+    .catch(error => console.error("Error approving credit:", error));
+}
+
+// Deny Credit Request and Move to Processed Table
+function denyCredit(requestId, username, credits) {
+    fetch("/admin/deny-credit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requestId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        moveToProcessedTable(requestId, username, credits, "Denied");
+        fetchCreditRequests();  // Refresh the pending requests
+    })
+    .catch(error => console.error("Error denying credit:", error));
+}
+
+// Move Requests to Processed Table
+function moveToProcessedTable(requestId, username, credits, status) {
+    const processedTableBody = document.getElementById("processed-credit-requests").querySelector("tbody");
+
+    let row = `<tr>
+        <td>${requestId}</td>
+        <td>${username}</td>
+        <td>${credits}</td>
+        <td>${status}</td>
+    </tr>`;
+
+    processedTableBody.innerHTML += row;
+}
+
+
+// Call function to load credit requests on page load
+document.addEventListener("DOMContentLoaded", fetchCreditRequests);
+
+// Function to Fetch and Display User Activity Logs
+function fetchActivityLogs() {
+    fetch("/admin/activity-logs")
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById("activity-logs-table").querySelector("tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            data.logs.forEach(log => {
+                let row = `<tr>
+                    <td>${new Date(log.timestamp).toLocaleString()}</td>
+                    <td>${log.username}</td>
+                    <td>${log.action}</td>
+                    <td>${log.details}</td>
+                </tr>`;
+
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error("Error fetching activity logs:", error));
+}
+
+// Function to Filter Logs by Username
+function filterActivityTable() {
+    let input = document.getElementById("searchActivity").value.toLowerCase();
+    let table = document.getElementById("activity-logs-table");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
+        let usernameCell = rows[i].getElementsByTagName("td")[1]; // Username is in the second column
+        if (usernameCell) {
+            let username = usernameCell.textContent || usernameCell.innerText;
+            if (username.toLowerCase().includes(input)) {
+                rows[i].style.display = ""; // Show matching rows
+            } else {
+                rows[i].style.display = "none"; // Hide non-matching rows
+            }
+        }
+    }
+}
+
+// Load Activity Logs when Admin Opens the Page
+document.addEventListener("DOMContentLoaded", fetchActivityLogs);
+
+
+
+function fetchCreditRequests() {
+    fetch("/admin/credit-requests")
+        .then(response => response.json())
+        .then(data => {
+            const pendingTableBody = document.getElementById("pending-credit-requests").querySelector("tbody");
+            pendingTableBody.innerHTML = ""; // Clear existing rows
+
+            data.requests.forEach(request => {
+                let row = `<tr>
+                    <td>${request.id}</td>
+                    <td>${request.username}</td>
+                    <td>${request.requested_credits}</td>
+                    <td>
+                        <button class="approve-btn" onclick="approveCredit(${request.id}, '${request.username}', ${request.requested_credits})">Approve</button>
+                        <button class="deny-btn" onclick="denyCredit(${request.id}, '${request.username}', ${request.requested_credits})">Deny</button>
+                    </td>
+                </tr>`;
+
+                pendingTableBody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error("Error fetching credit requests:", error));
+}
+
+
+
+// Logout Function
+function logout() {
+    fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include"
+    }).then(() => {
+        window.location.href = "index.html";  // Redirect to login page
+    }).catch(error => console.error("Logout error:", error));
+}
+
+
+
+now i will share all the imp backend files okay where you have to return api response instead of frontend files please dont change anything else in the logic, ui, frontend code, okey? shall i sharre the backend files?
+
+

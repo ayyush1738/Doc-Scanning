@@ -58,9 +58,11 @@ async function loginUser(e) {
         });
 
         const data = await response.json();
+        console.log("data: ",data);
 
         if (data.message === "Login successful") {
             window.location.href = data.user.role === "admin" ? "dashboard.html" : `user.html?username=${username}`;
+            
         } else {
             alert(data.message);
         }
