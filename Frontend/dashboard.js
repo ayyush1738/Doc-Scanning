@@ -13,9 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     createDoughnutChart(data.top_users);
     createBarChart(data.top_credits);
 
-    // Populate Scans per User Table
     const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
-    tableBody.innerHTML = ""; // Clear existing rows
+    tableBody.innerHTML = ""; 
 
     if (data.user_scans.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No Data Available At Present</td></tr>`;
@@ -33,9 +32,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Populate Credit Usage Table
     const tableBody2 = document.getElementById("credit-scans-table").querySelector("tbody");
-    tableBody2.innerHTML = ""; // Clear existing rows
+    tableBody2.innerHTML = ""; 
 
     if (data.credits_used.length === 0) {
         tableBody2.innerHTML = `<tr><td colspan="3" style="text-align:center;">No Data Available At Present</td></tr>`;
@@ -50,23 +48,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Default page load
     showPage(1);
 });
 
 
 
-// Function to switch between pages
 function showPage(pageNumber) {
     document.querySelectorAll(".page").forEach(page => page.classList.remove("active-page"));
     document.getElementById(`page${pageNumber}`).classList.add("active-page");
 
-    // Update active link in the sidebar
     document.querySelectorAll(".sidebar a").forEach(link => link.classList.remove("active"));
     document.querySelectorAll(".sidebar a")[pageNumber - 1].classList.add("active");
 }
 
-// Doughnut Chart for Top Users by Scans
 function createDoughnutChart(topUsers) {
     const ctx = document.getElementById("topUsersChart").getContext("2d");
     new Chart(ctx, {
@@ -101,7 +95,7 @@ function createBarChart(topCredits) {
             scales: {
                 x: {
                     grid: {
-                        display: false // Hides vertical grid lines
+                        display: false 
                     }
                 },
                 y: {
@@ -110,13 +104,13 @@ function createBarChart(topCredits) {
                         stepSize: 0.5
                     },
                     grid: {
-                        display: false // Hides horizontal grid lines
+                        display: false 
                     }
                 }
             },
             plugins: {
                 legend: {
-                    display: false // Hides the dataset label box
+                    display: false 
                 }
             }
         }
@@ -124,20 +118,19 @@ function createBarChart(topCredits) {
 }
 
 
-// Function to filter table based on search input
 function filterScansTable() {
     let input = document.getElementById("searchUser").value.toLowerCase();
     let table = document.getElementById("user-scans-table");
     let rows = table.getElementsByTagName("tr");
 
-    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
-        let usernameCell = rows[i].getElementsByTagName("td")[0]; // Username is in the first column
+    for (let i = 1; i < rows.length; i++) { 
+        let usernameCell = rows[i].getElementsByTagName("td")[0]; 
         if (usernameCell) {
             let username = usernameCell.textContent || usernameCell.innerText;
             if (username.toLowerCase().includes(input)) {
-                rows[i].style.display = ""; // Show matching rows
+                rows[i].style.display = ""; 
             } else {
-                rows[i].style.display = "none"; // Hide non-matching rows
+                rows[i].style.display = "none"; 
             }
         }
     }
@@ -148,22 +141,20 @@ function filterCreditsTable() {
     let table = document.getElementById("credit-scans-table");
     let rows = table.getElementsByTagName("tr");
 
-    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
-        let usernameCell = rows[i].getElementsByTagName("td")[0]; // Username is in the first column
+    for (let i = 1; i < rows.length; i++) { 
+        let usernameCell = rows[i].getElementsByTagName("td")[0]; 
         if (usernameCell) {
             let username = usernameCell.textContent || usernameCell.innerText;
             if (username.toLowerCase().includes(input)) {
-                rows[i].style.display = ""; // Show matching rows
+                rows[i].style.display = ""; 
             } else {
-                rows[i].style.display = "none"; // Hide non-matching rows
+                rows[i].style.display = "none"; 
             }
         }
     }
 }
 
 
-// Function to Approve Credit Request
-// Function to Approve Credit Request
 function approveCredit(requestId) {
     fetch("/admin/approve-credit", {
         method: "POST",
@@ -175,12 +166,11 @@ function approveCredit(requestId) {
     .then(response => response.json())
     .then(data => {
         alert(data.message);
-        fetchCreditRequests();  // Refresh the table
+        fetchCreditRequests();  
     })
     .catch(error => console.error("Error approving credit:", error));
 }
 
-// Function to Deny Credit Request
 function denyCredit(requestId) {
     fetch("/admin/deny-credit", {
         method: "POST",
@@ -192,20 +182,18 @@ function denyCredit(requestId) {
     .then(response => response.json())
     .then(data => {
         alert(data.message);
-        fetchCreditRequests();  // Refresh the table
+        fetchCreditRequests();  
     })
     .catch(error => console.error("Error denying credit:", error));
 }
 
-// Function to Fetch and Display Credit Requests
-// Fetch and Display Pending Requests
-// Fetch and Display Users in "Scans per User" Table
+
 function fetchScansPerUser() {
     fetch("/admin/analytics")
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
-            tableBody.innerHTML = ""; // Clear existing rows
+            tableBody.innerHTML = ""; 
 
             data.user_scans.forEach(user => {
                 let row = `<tr>
@@ -226,8 +214,6 @@ function fetchScansPerUser() {
         .catch(error => console.error("Error fetching scans per user:", error));
 }
 
-// Function to Update User Credits (Increment or Decrement)
-// Function to Update User Credits (Admin Controls)
 function updateCredits(userId, amount) {
     fetch("/admin/update-credits", {
         method: "POST",
@@ -239,7 +225,6 @@ function updateCredits(userId, amount) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update UI only if the update was successful
             let creditsElement = document.getElementById(`credits-${userId}`);
             creditsElement.textContent = parseInt(creditsElement.textContent) + amount;
         }
@@ -249,11 +234,9 @@ function updateCredits(userId, amount) {
 }
 
 
-// Load Scans per User on Page Load
 document.addEventListener("DOMContentLoaded", fetchScansPerUser);
 
 
-// Approve Credit Request and Move to Processed Table
 function approveCredit(requestId, username, credits) {
     fetch("/admin/approve-credit", {
         method: "POST",
@@ -266,12 +249,11 @@ function approveCredit(requestId, username, credits) {
     .then(data => {
         alert(data.message);
         moveToProcessedTable(requestId, username, credits, "Approved");
-        fetchCreditRequests();  // Refresh the pending requests
+        fetchCreditRequests();  
     })
     .catch(error => console.error("Error approving credit:", error));
 }
 
-// Deny Credit Request and Move to Processed Table
 function denyCredit(requestId, username, credits) {
     fetch("/admin/deny-credit", {
         method: "POST",
@@ -284,12 +266,11 @@ function denyCredit(requestId, username, credits) {
     .then(data => {
         alert(data.message);
         moveToProcessedTable(requestId, username, credits, "Denied");
-        fetchCreditRequests();  // Refresh the pending requests
+        fetchCreditRequests();  
     })
     .catch(error => console.error("Error denying credit:", error));
 }
 
-// Move Requests to Processed Table
 function moveToProcessedTable(requestId, username, credits, status) {
     const processedTableBody = document.getElementById("processed-credit-requests").querySelector("tbody");
 
@@ -304,16 +285,14 @@ function moveToProcessedTable(requestId, username, credits, status) {
 }
 
 
-// Call function to load credit requests on page load
 document.addEventListener("DOMContentLoaded", fetchCreditRequests);
 
-// Function to Fetch and Display User Activity Logs
 function fetchActivityLogs() {
     fetch("/admin/activity-logs")
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById("activity-logs-table").querySelector("tbody");
-            tableBody.innerHTML = ""; // Clear existing rows
+            tableBody.innerHTML = ""; 
 
             data.logs.forEach(log => {
                 let row = `<tr>
@@ -329,36 +308,32 @@ function fetchActivityLogs() {
         .catch(error => console.error("Error fetching activity logs:", error));
 }
 
-// Function to Filter Logs by Username
 function filterActivityTable() {
     let input = document.getElementById("searchActivity").value.toLowerCase();
     let table = document.getElementById("activity-logs-table");
     let rows = table.getElementsByTagName("tr");
 
-    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header row
-        let usernameCell = rows[i].getElementsByTagName("td")[1]; // Username is in the second column
+    for (let i = 1; i < rows.length; i++) { 
+        let usernameCell = rows[i].getElementsByTagName("td")[1]; 
         if (usernameCell) {
             let username = usernameCell.textContent || usernameCell.innerText;
             if (username.toLowerCase().includes(input)) {
-                rows[i].style.display = ""; // Show matching rows
+                rows[i].style.display = ""; 
             } else {
-                rows[i].style.display = "none"; // Hide non-matching rows
+                rows[i].style.display = "none"; 
             }
         }
     }
 }
 
-// Load Activity Logs when Admin Opens the Page
 document.addEventListener("DOMContentLoaded", fetchActivityLogs);
-
-
 
 function fetchCreditRequests() {
     fetch("/admin/credit-requests")
         .then(response => response.json())
         .then(data => {
             const pendingTableBody = document.getElementById("pending-credit-requests").querySelector("tbody");
-            pendingTableBody.innerHTML = ""; // Clear existing rows
+            pendingTableBody.innerHTML = ""; 
 
             data.requests.forEach(request => {
                 let row = `<tr>
@@ -379,13 +354,12 @@ function fetchCreditRequests() {
 
 
 
-// Logout Function
 function logout() {
     fetch("/auth/logout", {
         method: "POST",
         credentials: "include"
     }).then(() => {
-        window.location.href = "index.html";  // Redirect to login page
+        window.location.href = "index.html";  
     }).catch(error => console.error("Logout error:", error));
 }
 

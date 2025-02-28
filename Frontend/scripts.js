@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    // Add event listeners only if the forms exist
     const registerForm = document.getElementById("register-form");
     if (registerForm) registerForm.addEventListener("submit", registerUser);
 
@@ -75,16 +74,16 @@ async function checkUserRole(username) {
     try {
         const response = await fetch("http://localhost:3000/auth/checkRole", {
             method: "GET",
-            credentials: "include",  // ✅ Ensures cookies are sent
+            credentials: "include",  
             headers: { "Content-Type": "application/json" }
         });
 
         const data = await response.json();
         
-        if (!response.ok) { // ✅ Properly handle 401 and 403 responses
-            console.error("❌ Authentication Failed:", data);
+        if (!response.ok) { 
+            console.error("Authentication Failed:", data);
             alert(data.message);
-            window.location.href = "index.html"; // Redirect if unauthorized
+            window.location.href = "index.html"; 
             return;
         }
 
@@ -95,13 +94,12 @@ async function checkUserRole(username) {
             await showProfile(username);
         }
     } catch (error) {
-        console.error("❌ Error checking user role:", error);
+        console.error("Error checking user role:", error);
     }
 }
 
 
 
-// Fetch and display user profile
 async function showProfile(username) {
     try {
         const response = await fetch(`http://localhost:3000/user/profile?username=${username}`);
@@ -111,13 +109,11 @@ async function showProfile(username) {
             profile.pastScans = [];
         }
 
-        // Populate user details
         document.getElementById("welcomeMessage").textContent = `Welcome, ${profile.username}`;
         document.getElementById("userDetails").textContent = `Remaining Credits: ${profile.role === 'admin' ? 'Unlimited' : profile.credits} | Role: ${profile.role}`;
 
-        // Populate past scans
         const pastScansList = document.getElementById("pastScansList");
-        pastScansList.innerHTML = ""; // Clear previous list
+        pastScansList.innerHTML = ""; 
 
         if (profile.pastScans.length > 0) {
             profile.pastScans.forEach(doc => {
@@ -127,7 +123,7 @@ async function showProfile(username) {
                 const button = document.createElement("button");
                 button.textContent = "Find Matches";
                 listItem.classList.add("list-items")
-                button.classList.add("findMatchesBtn"); // Assigning class
+                button.classList.add("findMatchesBtn"); 
                 button.onclick = () => findMatches(doc.id, username);
 
                 listItem.appendChild(button);
@@ -139,7 +135,6 @@ async function showProfile(username) {
             pastScansList.appendChild(emptyItem);
         }
 
-        // Show credit request section for regular users
         if (profile.role === 'user') {
             document.getElementById("creditRequestSection").style.display = "block";
         }
@@ -150,9 +145,6 @@ async function showProfile(username) {
 
 
 
-/**
- * Upload document for scanning
- */
 async function uploadDocument(e) {
     e.preventDefault();
 
@@ -191,7 +183,7 @@ async function uploadDocument(e) {
         }
 
         alert("File uploaded successfully!");
-        await showProfile(username); // ✅ Refresh profile to display uploaded file
+        await showProfile(username); 
 
     } catch (error) {
         console.error("Error uploading document:", error);
@@ -207,7 +199,7 @@ async function findMatches(docId, username) {
 
     try {
         const response = await fetch(`http://localhost:3000/user/regularUser/matches/${docId}?username=${username}`, {
-            credentials: 'include' // Ensure cookies are sent for authentication
+            credentials: 'include' 
         });
 
         console.log("Response received:", response);
@@ -224,9 +216,8 @@ async function findMatches(docId, username) {
             return;
         }
 
-        // Display matches in the UI
         const matchesList = document.getElementById("matches");
-        matchesList.innerHTML = ""; // Clear previous content
+        matchesList.innerHTML = ""; 
 
         if (data.matches.length > 0) {
             data.matches.forEach(match => {
@@ -249,7 +240,6 @@ async function findMatches(docId, username) {
     }
 }
 
-// Function to Open File in a New Tab
 function openFile(docId) {
     window.open(`http://localhost:3000/user/regularUser/open-file/${docId}`, "_blank");
 }
@@ -266,7 +256,7 @@ async function requestCredits(username) {
     }
     try {
         const response = await fetch("http://localhost:3000/user/regularUser/requestCredits", {
-            method: "POST",  // Ensure it matches backend route type
+            method: "POST",  
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, requested_credits: creditAmount }),
             credentials: "include"
@@ -289,6 +279,6 @@ function logout() {
         method: "POST",
         credentials: "include"
     }).then(() => {
-        window.location.href = "index.html";  // Redirect to login page
+        window.location.href = "index.html";  
     }).catch(error => console.error("Logout error:", error));
 }

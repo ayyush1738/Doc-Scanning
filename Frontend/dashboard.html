@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <h2>Analytics</h2>
         <a href="#" onclick="showPage(1)" class="active">Scans/Topics</a>
@@ -25,11 +24,9 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
         <h1>Dashboard</h1>
 
-        <!-- Page 1: Total Scans & Top Topics -->
         <div id="page1" class="page">
             <div class="stats-grid">
                 <div class="stat-card">
@@ -43,13 +40,11 @@
             </div>
         </div>
 
-        <!-- Page 2: Top Users by Scans -->
         <div id="page2" class="page">
             <h2>Top Users by Scans</h2>
             <canvas id="topUsersChart"></canvas>
         </div>
 
-        <!-- Page 3: Credit Usage Stats -->
         <div id="page3" class="page">
             <h2>Daily Credit Usage Stats</h2>
             <canvas id="creditChart"></canvas>
@@ -65,11 +60,7 @@
                 <tbody></tbody>
             </table>
         </div>
-
-        <!-- Page 4: Scans per User Table -->
-        <!-- Page 4: Scans per User Table -->
-<!-- Page 4: Scans per User Table -->
-<!-- Page 4: Scans per User Table -->
+        
 <div id="page4" class="page">
     <h2>Scans per User</h2>
     <input type="text" id="searchUser" placeholder="Search by Uid" onkeyup="filterScansTable()">
@@ -89,7 +80,6 @@
 </div>
 
 
-<!-- Pending Credit Requests Table -->
 <div id="page5" class="page">
     <h2>Pending Credit Requests</h2>
     <table id="pending-credit-requests">
@@ -118,7 +108,6 @@
 </div>
 
 
-<!-- Page 7: User Activity Logs -->
 <div id="page6" class="page">
     <h2>User Activity Logs</h2>
     <input type="text" id="searchActivity" placeholder="Search by Username" onkeyup="filterActivityTable()">
