@@ -6,7 +6,7 @@ This project is a **self-contained document scanning and matching system** that 
 ## Features
 - **User Authentication** (JWT-based login & role management)
 - **Document Upload & Scanning**
-- **Text Similarity Matching** (Levenshtein Distance Algorithm)
+- **Text Similarity Matching** (Bert Cosine Similarity)
 - **Daily Free Credits System (Auto Reset at Midnight)**
 - **Admin Credit Approval System**
 - **Activity Logging & User Statistics**
