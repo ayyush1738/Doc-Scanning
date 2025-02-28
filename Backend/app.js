@@ -33,7 +33,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, "../Frontend")));
+app.use(express.static(path.join(__dirname, "../Frontend")));
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", req.headers.origin || "*"); // Allow any origin dynamically
     res.header("Access-Control-Allow-Credentials", "true");  // ✅ Allow cookies to be sent
