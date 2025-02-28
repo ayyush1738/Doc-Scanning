@@ -10,7 +10,6 @@ const resetCredits = require("./src/models/user.model.js");
 const schedule = require('node-schedule');
 const db = require("./src/db/database.js");
 
-// Function to reset daily scans and credits
 function resetDailyScansAndCredits() {
     console.log("Resetting daily scans and credits...");
 
@@ -25,7 +24,6 @@ function resetDailyScansAndCredits() {
     console.log("Daily scans and credits reset at midnight.");
 }
 
-// Schedule the reset function to run every midnight
 schedule.scheduleJob('0 0 * * *', resetDailyScansAndCredits);
 
 const app = express();
@@ -35,8 +33,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../Frontend")));
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", req.headers.origin || "*"); // Allow any origin dynamically
-    res.header("Access-Control-Allow-Credentials", "true");  // ✅ Allow cookies to be sent
+    res.header("Access-Control-Allow-Origin", req.headers.origin || "*"); 
+    res.header("Access-Control-Allow-Credentials", "true");  
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
@@ -53,7 +51,7 @@ setInterval(() => {
     
 }, 60 * 1000 )
 
-// 
+ 
 app.use("/healthcheck", healthcheckRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes)
