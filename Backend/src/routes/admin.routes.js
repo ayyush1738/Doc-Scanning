@@ -1,4 +1,3 @@
-// Backend - admin.routes.js
 const express = require("express");
 const { getDashboard, getAdminAnalytics, getCreditRequests, approveCreditRequest, denyCreditRequest, updateUserCredits, getActivityLogs } = require("../controllers/admin.controllers.js");
 const authenticateToken = require("../middleware/auth.middleware.js");
