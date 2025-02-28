@@ -107,9 +107,176 @@ The backend will run on `http://localhost:3000`.
 - Located in `tests/` folder.
 
 ---
+# API Documentation
 
-## Screenshots
-(Add screenshots of the dashboard, profile, document scanning, and matching results)
+## Overview
+This document provides API endpoints for both Admin and User roles, detailing their request methods, responses, and expected behavior.
+
+---
+
+# **Admin APIs**
+
+## 1. Get Analytics Data
+**Endpoint:** `GET /admin/analytics`
+
+**Response:**
+```json
+{
+    "total_scans_today": 23,
+    "top_topics": [
+        "hero4.txt", "hero6.txt", "hero3.txt", "hero5.txt", "hero2.txt", "hero1.txt", "imp.txt"
+    ],
+    "top_users": [
+        { "username": "John", "total_scans": 27 },
+        { "username": "Jack", "total_scans": 21 },
+        { "username": "Ayush", "total_scans": 0 }
+    ],
+    "user_scans": [
+        { "id": 1, "username": "Ayush", "scans_today": 0, "total_scans": 0, "credits": 20, "pending_requests": 0 },
+        { "id": 2, "username": "Jack", "scans_today": 21, "total_scans": 21, "credits": 0, "pending_requests": 5 },
+        { "id": 3, "username": "John", "scans_today": 2, "total_scans": 27, "credits": 15, "pending_requests": 0 }
+    ],
+    "credits_used": [
+        { "id": 1, "username": "Ayush", "credits_used": 0 },
+        { "id": 2, "username": "Jack", "credits_used": 21 },
+        { "id": 3, "username": "John", "credits_used": 2 }
+    ],
+    "top_credits": [
+        { "id": 2, "username": "Jack", "top_credits": 21 },
+        { "id": 3, "username": "John", "top_credits": 2 },
+        { "id": 1, "username": "Ayush", "top_credits": 0 }
+    ]
+}
+```
+
+---
+
+## 2. Get Credit Requests
+**Endpoint:** `GET /admin/credit-requests`
+
+**Response:**
+```json
+{"requests":[{"id":11,"username":"Jack","requested_credits":5}]}
+```
+
+---
+
+## 3. Get Activity Logs
+**Endpoint:** `GET /admin/activity-logs`
+
+**Response:**
+```json
+{
+    "logs": [
+        { "id": 28, "username": "Jack", "action": "Credit Request", "details": "Requested 5 credits", "timestamp": "2025-02-28 18:12:33" },
+        { "id": 27, "username": "Jack", "action": "Document Scan", "details": "Scanned file: hero1.txt", "timestamp": "2025-02-28 18:12:25" }
+    ]
+}
+```
+
+---
+
+## 4. Deny Credit Request
+**Endpoint:** `POST /admin/deny-credit`
+
+**Response:**
+```json
+{"message":"Credit request denied successfully."}
+```
+
+---
+
+## 5. Update User Credits
+**Endpoint:** `POST /admin/update-credits`
+
+**Response:**
+```json
+{"success":true,"message":"User credits updated to 1."}
+```
+
+---
+
+# **User APIs**
+
+## 1. Check User Role
+**Endpoint:** `GET /auth/checkRole`
+
+**Response:**
+```json
+{"role":"user"}
+```
+
+---
+
+## 2. Get User Profile
+**Endpoint:** `GET /user/profile?username=Jack`
+
+**Response:**
+```json
+{
+    "id": 2,
+    "username": "Jack",
+    "role": "user",
+    "credits": 2,
+    "pastScans": [
+        { "id": 27, "filename": "hero3.txt", "upload_date": "2025-02-27 19:08:43" }
+    ]
+}
+```
+
+---
+
+## 3. Upload Document
+**Endpoint:** `POST /user/regularUser/upload`
+
+**Response:**
+```json
+{
+    "message": "File uploaded successfully!",
+    "document": { "filename": "hero5.txt", "upload_date": "2025-02-28 18:19:10" }
+}
+```
+
+---
+
+## 4. Get Document Matches
+**Endpoint:** `GET /user/regularUser/matches/29?username=Jack`
+
+**Response:**
+```json
+{
+    "sourceDocument": { "id": 29, "filename": "hero4.txt" },
+    "matches": [
+        { "id": 35, "filename": "hero4.txt", "similarity": "1.00" },
+        { "id": 41, "filename": "hero4.txt", "similarity": "1.00" }
+    ]
+}
+```
+
+---
+
+## 5. Request Credits
+**Endpoint:** `POST /user/regularUser/requestCredits`
+
+**Response (Denied):**
+```json
+{"message": "Credit request denied. You can only request credits when your balance is 0."}
+```
+
+**Response (Accepted):**
+```json
+{"message":"Request Submitted Successfully","requested_credits":4}
+```
+
+---
+
+# **Notes**
+- All endpoints require authentication.
+- Responses are JSON formatted.
+- Use appropriate HTTP methods (`GET`, `POST`).
+- Ensure the request body is correctly formatted when sending `POST` requests.
+
+
 
 ---
 
