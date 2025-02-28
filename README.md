@@ -29,8 +29,9 @@ Ensure you have **Node.js** and **SQLite** installed on your system.
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/document-scanner.git
-   cd document-scanner
+   git clone https://github.com/ayyush1738/Doc-Scanning.git
+   cd Doc-Scanning
+   cd Backend
    ```
 
 2. Install dependencies:
@@ -40,12 +41,12 @@ Ensure you have **Node.js** and **SQLite** installed on your system.
 
 3. Run the server:
    ```bash
-   npm start
+   npm run dev
    ```
 
 The backend will run on `http://localhost:3000`.
 
-4. Open the frontend by launching `index.html` in your browser.
+4. Open the frontend by launching `http://localhost:3000` in your browser.
 
 ---
 
