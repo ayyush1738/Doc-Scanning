@@ -1,14 +1,12 @@
-
-
 document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch("/admin/analytics");
     const data = await response.json();
-    let count =0;
+    let count = 0;
 
     document.getElementById("total-scans").innerText = data.total_scans_today;
     document.getElementById("top-topics").innerHTML = data.top_topics
         .map((topic, index) => {
-            return `<span class="${index < 3 ? "highlight-topic" : ""}">${count=count+1}${'. '} ${topic}</span>`;
+            return `<span class="${index < 3 ? "highlight-topic" : ""}">${count = count + 1}${'. '} ${topic}</span>`;
         })
         .join("<br><br>");
 
@@ -16,35 +14,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     createBarChart(data.top_credits);
 
     // Populate Scans per User Table
-const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
-tableBody.innerHTML = "";
+    const tableBody = document.getElementById("user-scans-table").querySelector("tbody");
+    tableBody.innerHTML = ""; // Clear existing rows
 
-data.user_scans.forEach(user => {
-
-    let row = `<tr>
-        <td>${user.id}</td>
-        <td>${user.username}</td>
-        <td>${user.scans_today}</td>
-        <td>${user.total_scans}</td>
-        <td>${user.credits}</td>
-        <td>${user.pending_requests}</td>
-    </tr>`;
-    
-    tableBody.innerHTML += row;
-});
-
+    if (data.user_scans.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No Data Available At Present</td></tr>`;
+    } else {
+        data.user_scans.forEach(user => {
+            let row = `<tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.scans_today}</td>
+                <td>${user.total_scans}</td>
+                <td>${user.credits}</td>
+                <td>${user.pending_requests}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
 
     // Populate Credit Usage Table
     const tableBody2 = document.getElementById("credit-scans-table").querySelector("tbody");
-    tableBody2.innerHTML = "";
-    data.credits_used.forEach(user => {
-        let row = `<tr>
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td>${user.credits_used}</td>
-        </tr>`;
-        tableBody2.innerHTML += row;
-    });
+    tableBody2.innerHTML = ""; // Clear existing rows
+
+    if (data.credits_used.length === 0) {
+        tableBody2.innerHTML = `<tr><td colspan="3" style="text-align:center;">No Data Available At Present</td></tr>`;
+    } else {
+        data.credits_used.forEach(user => {
+            let row = `<tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.credits_used}</td>
+            </tr>`;
+            tableBody2.innerHTML += row;
+        });
+    }
 
     // Default page load
     showPage(1);

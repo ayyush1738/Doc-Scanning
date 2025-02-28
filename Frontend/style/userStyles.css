@@ -9,7 +9,7 @@ body {
 
 body::before {
     content: "";
-    background: url('../public/IMG_8989.jpeg') no-repeat center center fixed;
+    background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
     background-size: cover;
     opacity: 0.4; /* Adjust transparency as desired */
     position: fixed;
@@ -288,10 +288,10 @@ ul#matches li {
 
 /* Style for each grid item */
 .grid-item {
-    /* background: #0c0c0c8e; */
+    background: #0c0c0c8e;
     padding: 20px;
     border-radius: 8px;
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     color: white;
 }
 
@@ -374,7 +374,9 @@ ul#matches li {
 
 .logout-btn{
   border-style: none;
-  background: rgba(255, 255, 255, 0.452);
+  background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  
   padding: 5px;
   border-radius: 5px;
 }

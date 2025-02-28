@@ -130,18 +130,23 @@ table {
     border-collapse: collapse;
     margin-top: 10px;
     height: 800px;
+    
 }
 
 th, td {
     padding: 10px;
     text-align: center;
+    height: 40px;
 }
 
 
 th {
-    background: #505357;
+    background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
+    background-size: cover;
     color: white;
 }
+
+
 
 /* Hide all pages initially */
 .page {
@@ -162,6 +167,7 @@ th {
     background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
     background-size: cover;
     border-radius: 5px;
+    color: black;
 }
 
 /* Optional: Customize scrollbar */
@@ -180,18 +186,22 @@ th {
 
 
 .highlight-topic {
-    color: rgb(9, 255, 0);
+    color: rgb(0, 0, 0);
     font-weight: bold;
     font-size: 30px;
 }
 
 table tbody tr:nth-child(odd) {
-    background-color: rgb(255, 255, 255);
+    background: url('../public/IMG_8997.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    height: 80px;
 }
 
 table tbody tr:nth-child(even) {
-    background-color: rgb(72, 74, 75);
+    background: url('../public/IMG_899942.jpeg') no-repeat center center fixed;
+    background-size: cover;
     color: white;
+    height: 100px;
 }
 
 #searchUser{
@@ -206,6 +216,16 @@ table tbody tr:nth-child(even) {
 #searchCreditsUser{
     border-style: none;
     margin-top: 80px;
+    margin-bottom: 20px;
+    height: 40px;
+    border-radius: 40px;
+    width: 300px;
+    padding: 10px;
+}
+
+#searchActivity
+{
+    border-style: none;
     margin-bottom: 20px;
     height: 40px;
     border-radius: 40px;
