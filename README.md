@@ -52,7 +52,7 @@ The backend will run on `http://localhost:3000`.
 
 ## ScreenShots
 
-![Login Page Screenshot](Images/Screenshot (16).png)
+<img src="Images/Screenshot (16).png" alt="Screenshot" width="600">
 
 
 ---
