@@ -6,7 +6,7 @@ This project is a **self-contained document scanning and matching system** that 
 ## Features
 - **User Authentication** (JWT-based login & role management)
 - **Document Upload & Scanning**
-- **Text Similarity Matching** (Bert Cosine Similarity)
+- **Text Similarity Matching** (TF-IDF Cosine Similarity)
 - **Daily Free Credits System (Auto Reset at Midnight)**
 - **Admin Credit Approval System**
 - **Activity Logging & User Statistics**
@@ -111,7 +111,7 @@ The backend will run on `http://localhost:3000`.
 
 ## Document Scanning & Matching
 - **Uploads are stored locally**
-- **Text similarity is checked using Levenshtein Distance Algorithm**
+- **Text similarity is checked using TF-IDF**
 - **Only documents with similarity >70% are matched**
 
 ---
